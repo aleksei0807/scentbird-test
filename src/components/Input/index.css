@@ -7,7 +7,7 @@
 		color: #000000;
 		font-family: "Proxima Nova";
 		font-weight: 400;
-		padding: 15px;
+		padding: 15px !important;
 
 		&:focus {
 			height: 50px;
