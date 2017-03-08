@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
 import ErrorComponent from '../../components/Error';
+import Address from '../Address';
 import styles from './index.css';
 
 const mapStateToProps = state => ({
@@ -21,7 +22,14 @@ export default class General extends Component {
 
 		return (
 			<div>
-				<div>Запилил.</div>
+				<header>хидер</header>
+				<div>
+					левая колонка
+				</div>
+				<div>
+					<Address type="shipping" />
+					<Address type="billing" />
+				</div>
 				<ErrorComponent message={errorMessage} />
 			</div>
 		);
