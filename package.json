@@ -15,12 +15,17 @@
   "dependencies": {
     "babel-core": "^6.14.0",
     "babel-polyfill": "^6.13.0",
+    "formsy": "^0.19.2",
+    "formsy-material-ui": "^0.5.5",
+    "formsy-react": "^0.19.2",
     "immutable": "^3.8.1",
+    "material-ui": "^0.17.0",
     "react": "^15.4.2",
     "react-css-modules": "^3.7.10",
     "react-dom": "^15.4.2",
     "react-hot-loader": "^3.0.0-beta.6",
     "react-redux": "^5.0.1",
+    "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0"
   },

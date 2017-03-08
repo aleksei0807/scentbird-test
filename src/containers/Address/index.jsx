@@ -2,7 +2,9 @@
 import React, { Component, PropTypes } from 'react';
 import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
+import { Form } from 'formsy';
 import { setData } from '../../actions/data';
+import Input from '../../components/Input';
 import styles from './index.css';
 
 const mapStateToProps = (state, props) => ({
@@ -28,7 +30,11 @@ export default class Address extends Component {
 	render() {
 		return (
 			<div>
-				{ this.props.addressData && this.props.addressData.get('firstName') }
+				<h1 styleName="formName">{this.props.type} address</h1>
+				<Form name={this.props.type}>
+					<Input styleName="firstName" name="firstName" floatingLabelText="First name" />
+					<Input name="lastName" floatingLabelText="Last name" />
+				</Form>
 			</div>
 		);
 	}

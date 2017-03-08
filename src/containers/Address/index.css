@@ -1,0 +1,14 @@
+.formName {
+	color: #000000;
+	font-family: "Proxima Nova";
+	font-size: 24px;
+	font-weight: 400;
+	padding-bottom: 20px;
+	&:first-letter{
+		text-transform: capitalize;
+	}
+}
+
+.firstName {
+	margin-right: 20px;
+}
