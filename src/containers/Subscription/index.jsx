@@ -17,7 +17,7 @@ const mapStateToProps = state => ({
 
 @connect(mapStateToProps, { setData })
 @CSSModules(styles, { allowMultiple: true })
-export default class CreateAccount extends Component {
+export default class Subscription extends Component {
 	static propTypes = {
 		subscription: PropTypes.string,
 	};

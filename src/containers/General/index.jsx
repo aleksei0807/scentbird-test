@@ -6,6 +6,7 @@ import ErrorComponent from '../../components/Error';
 import CreateAccount from '../CreateAccount';
 import Subscription from '../Subscription';
 import Address from '../Address';
+import Payment from '../Payment';
 import Logo from '../../components/Logo';
 import ProductInfo from '../../components/ProductInfo';
 import Chicken from '../../components/Chicken';
@@ -29,6 +30,7 @@ const bottomText = 'You will receive an email confirmation when recipient accept
 export default class General extends Component {
 	static propTypes = {
 		errorMessage: PropTypes.string,
+		showBillingAddres: PropTypes.bool,
 	};
 
 	toggleTick = () => {
@@ -58,9 +60,13 @@ export default class General extends Component {
 						<h3 styleName="subtitle">
 							Billed monthly. Renews automatically, cancel any time. Free shipping.
 						</h3>
+
 						<Subscription onlySmallScreen={subscriptionOnlySmallScreen} />
+
 						<CreateAccount />
+
 						<Address type="shipping" />
+
 						<div onClick={this.toggleTick}>
 							<div styleName="tick-container">
 								<div
@@ -73,7 +79,11 @@ export default class General extends Component {
 							</div>
 							<span styleName="use-this-address">Use this address as my billing address</span>
 						</div>
+
 						{ showBillingAddres ? <Address type="billing" /> : null }
+
+						<Payment />
+						
 						<div styleName="buttons-container">
 							<a href="#" styleName="back-link">Back</a>
 							<button type="button" styleName="button">
