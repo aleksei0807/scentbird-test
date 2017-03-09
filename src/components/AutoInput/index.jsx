@@ -10,7 +10,8 @@ export default class AutoInput extends Component {
 	/* eslint-disable react/sort-comp */
 	focused: boolean;
 	styleProps: Object;
-	customOnChange: ?Function;
+	customOnNewRequest: ?Function;
+	customOnUpdateInput: ?Function;
 	customOnBlur: ?Function;
 	customOnFocus: ?Function;
 	value: string;
@@ -23,7 +24,8 @@ export default class AutoInput extends Component {
 		defaultValue: PropTypes.any,
 		name: PropTypes.string.isRequired,
 		onBlur: PropTypes.func,
-		onChange: PropTypes.func,
+		onNewRequest: PropTypes.func,
+		onUpdateInput: PropTypes.func,
 		onFocus: PropTypes.func,
 		onKeyDown: PropTypes.func,
 		value: PropTypes.any,
@@ -65,6 +67,7 @@ export default class AutoInput extends Component {
 			},
 			fullWidth: true,
 			openOnFocus: true,
+			maxSearchResults: 5,
 		};
 		this.value = '';
 		this.state = {
@@ -77,11 +80,18 @@ export default class AutoInput extends Component {
 		};
 	}
 
-	onChange = (event: Object, newValue: string): void => {
-		this.value = newValue;
-		this.calculateOpacity(newValue);
-		if (this.customOnChange) {
-			this.customOnChange(event, newValue);
+	onNewRequest = (choosen: string, index: number): void => {
+		this.value = choosen;
+		this.calculateOpacity(choosen);
+		if (this.customOnNewRequest) {
+			this.customOnNewRequest(choosen, index);
+		}
+	}
+	onUpdateInput = (searchText: string, dataSource: Array<*>, params: Object): void => {
+		this.value = searchText;
+		this.calculateOpacity(searchText);
+		if (this.customOnNewRequest) {
+			this.customOnNewRequest(searchText, dataSource, params);
 		}
 	}
 
@@ -119,7 +129,8 @@ export default class AutoInput extends Component {
 		}};
 		const containerClassName = props.className;
 
-		this.customOnChange = props.onChange;
+		this.customOnNewRequest = props.onNewRequest;
+		this.customOnUpdateInput = props.onUpdateInput;
 		this.customOnFocus = props.onFocus;
 		this.customOnBlur = props.onBlur;
 		if (props.value) {
@@ -129,6 +140,8 @@ export default class AutoInput extends Component {
 		delete props.className;
 		delete props.validationError;
 		delete props.validationErrors;
+		delete props.onNewRequest;
+		delete props.onUpdateInput;
 
 		return (
 			<div className={containerClassName || null}>
@@ -136,7 +149,8 @@ export default class AutoInput extends Component {
 					{...props}
 					onFocus={this.onFocus}
 					onBlur={this.onBlur}
-					onChange={this.onChange}
+					onNewRequest={this.onNewRequest}
+					onUpdateInput={this.onUpdateInput}
 					styleName="input-container"
 					/>
 			</div>

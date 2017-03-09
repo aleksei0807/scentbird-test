@@ -19,8 +19,11 @@ import countriesJSON from './countries.en_US.json';
 
 const googleAPIKey = 'AIzaSyC7MKR8tBlhRTI-RxnePPXyky_atZG2_8Q';
 const countries = [...countriesJSON]; // we should have .each()
+const countriesFormatted = countries.map(v => v.name);
+const codeToCountry = countries.reduce((collect, v) => ({...collect, ...{[v.key]: v.name}}), {});
+const countryToCode = countries.reduce((collect, v) => ({...collect, ...{[v.name]: v.key}}), {});
 
-console.log(countriesJSON);
+console.log(countries);
 
 const mapStateToProps = (state, props) => ({
 	addressData: state.data.get(props.type),
@@ -128,11 +131,11 @@ export default class Address extends Component {
 		), {}));
 	})
 
-	countriesFilter = (searchText: string, key: any) => (
-		searchText !== ''
-		&& (key.name.toLowerCase().indexOf(searchText.toLowerCase()) !== -1
-		|| key.key.toLowerCase().indexOf(searchText.toLowerCase()) !== -1)
-	)
+	countriesFilter = (searchText: string, name: any) => {
+		return searchText !== ''
+			&& (name.toLowerCase().indexOf(searchText.toLowerCase()) !== -1
+			|| countryToCode[name].toLowerCase().indexOf(searchText.toLowerCase()) !== -1);
+	}
 
 	render() {
 		return (
@@ -182,7 +185,7 @@ export default class Address extends Component {
 							/>
 					</div>
 					<AutoInput
-						dataSource={countries}
+						dataSource={countriesFormatted}
 						filter={this.countriesFilter}
 						styleName="country field"
 						name="country"
