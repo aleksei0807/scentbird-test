@@ -1,0 +1,57 @@
+.container {
+	padding: 40px 30px;
+}
+
+.preview-wrapper {
+	width: 100%;
+	text-align: center;
+}
+
+.info {
+	border-top: #e6e6e6 1px solid;
+	border-bottom: #e6e6e6 1px solid;
+	margin: 45px 0 13px;
+	padding: 13px 0;
+}
+
+.info-line {
+	display: flex;
+	justify-content: space-between;
+	padding: 7px 0;
+}
+
+.total {
+	color: #151515;
+	font-family: "Gotham Medium";
+	font-size: 16px;
+	font-weight: 400;
+}
+
+.tick-container {
+	display: inline-block;
+	margin-left: 15px;
+	border: 1px solid #979797;
+	border-radius: 2px;
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+	width: 16px;
+	height: 16px;
+	vertical-align: sub;
+	cursor: pointer;
+}
+
+.tick {
+	margin-left: 1px;
+	margin-top: -1px;
+}
+
+.have-a-coupon {
+	font-size: 16px;
+	padding-top: 24px;
+	padding-bottom: 4px;
+	& a {
+		color: #ff408e;
+		text-decoration: underline;
+		text-decoration-style: dashed;
+		text-decoration-color: #979797;
+	}
+}

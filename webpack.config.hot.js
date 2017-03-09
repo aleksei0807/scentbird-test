@@ -50,6 +50,9 @@ module.exports = {
 				exclude: /node_modules/,
 				include: __dirname,
 			}, {
+				test: /\.json$/,
+				loader: 'json-loader',
+			}, {
 				test: /\.css$/,
 				loaders: ['style-loader', postCssLoader.join('')],
 			}, {
@@ -62,7 +65,7 @@ module.exports = {
 				test: /\.gif$/,
 				loader: 'file-loader?name=images/[hash].[ext]',
 			}, {
-				test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+				test: /\.(ttf|eot|otf|svg|woff(2)?)(\?[a-z0-9]+)?$/,
 				loader: 'file-loader?name=fonts/[hash].[ext]',
 			},
 		],

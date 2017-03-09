@@ -33,7 +33,8 @@
     "babel/arrow-parens": 0,
     "babel/no-await-in-loop": 1,
     "babel/flow-object-type": 1,
-    "babel/func-params-comma-dangle": 1
+    "babel/func-params-comma-dangle": 1,
+	"jsx-a11y/href-no-hash": 0
   },
   "settings": {
     "import/ignore": "node_modules"
