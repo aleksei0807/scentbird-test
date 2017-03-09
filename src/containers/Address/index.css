@@ -1,3 +1,7 @@
+.container {
+	padding-bottom: 25px;
+}
+
 .formName {
 	color: #000000;
 	font-family: "Proxima Nova";
@@ -9,6 +13,56 @@
 	}
 }
 
+.group, .country {
+	width: 100%;
+}
+
+.field {
+	display: inline-block;
+}
+
 .firstName {
+	padding-right: 10px;
+}
+
+.lastName {
+	padding-left: 10px;
+}
+
+.street {
+	width: 64.35%;
 	margin-right: 20px;
+	height: 50px !important;
+}
+
+.apt {
+	width: 33.34%;
+}
+
+.col-1of3 {
+	width: 33.334%;
+	&:not(:nth-child(3)) {
+		padding-right: 20px;
+	}
+}
+
+.zip-container {
+	position: relative;
+
+	& .zip-tick {
+		position: absolute;
+		top: 18px;
+		right: 40px;
+		opacity: 0;
+		transition: 150ms all ease-in-out 0s;
+		&.valid {
+			opacity: 1;
+		}
+	}
+}
+.zip {}
+
+.firstName, .lastName {
+	width: 50%;
+	display: inline-block;
 }

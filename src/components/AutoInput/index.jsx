@@ -1,11 +1,12 @@
 /* @flow */
 import React, { Component, PropTypes } from 'react';
 import CSSModules from 'react-css-modules';
-import FormsyText from 'formsy-material-ui/lib/FormsyText';
+// import FormsyAutoComplete from '../AutoComplete';
+import AutoComplete from 'material-ui/AutoComplete';
 import styles from './index.css';
 
 @CSSModules(styles, { allowMultiple: true })
-export default class Input extends Component {
+export default class AutoInput extends Component {
 	/* eslint-disable react/sort-comp */
 	focused: boolean;
 	styleProps: Object;
@@ -63,6 +64,7 @@ export default class Input extends Component {
 				border: null,
 			},
 			fullWidth: true,
+			openOnFocus: true,
 		};
 		this.value = '';
 		this.state = {
@@ -125,10 +127,12 @@ export default class Input extends Component {
 		}
 		delete props.styles;
 		delete props.className;
+		delete props.validationError;
+		delete props.validationErrors;
 
 		return (
 			<div className={containerClassName || null}>
-				<FormsyText
+				<AutoComplete
 					{...props}
 					onFocus={this.onFocus}
 					onBlur={this.onBlur}

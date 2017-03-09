@@ -1,0 +1,30 @@
+.input-container {
+	transform: translateZ(0);
+	margin-bottom: 20px;
+	height: 50px !important;
+	& input {
+		font-size: 18px;
+		height: 50px;
+		transition: 150ms all ease-in-out 0s;
+		color: #000000;
+		font-family: "Proxima Nova";
+		font-weight: 400;
+		padding: 15px !important;
+
+		&:focus {
+			height: 50px;
+			border: 1px solid rgba(255, 68, 143, 0.6) !important;
+			background-color: #fff !important;
+		}
+	}
+	& label {
+		transform: translateZ(0);
+		font-size: 18px;
+		color: #9b9b9b;
+		font-family: "Proxima Nova";
+		font-weight: 400;
+		&:hover {
+			font-size: 14px;
+		}
+	}
+}

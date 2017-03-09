@@ -10,8 +10,9 @@ export default class Tick extends Component {
 	};
 
 	render() {
+		const tickClassName = `${styles.tick}${this.props.className ? ` ${this.props.className}` : ''}`;
 		return (
-			<div styleName="tick">
+			<div className={tickClassName}>
 				<div styleName="left" style={{background: this.props.color}} />
 				<div styleName="right" style={{background: this.props.color}} />
 			</div>
