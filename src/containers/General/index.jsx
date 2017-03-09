@@ -9,27 +9,34 @@ import Address from '../Address';
 import Logo from '../../components/Logo';
 import ProductInfo from '../../components/ProductInfo';
 import Chicken from '../../components/Chicken';
+import Tick from '../../components/Tick';
+import { setData } from '../../actions/data';
 import arrow from './images/arrow.svg';
 import { subscriptionOnlySmallScreen } from '../../../config.json';
 import styles from './index.css';
 
 const mapStateToProps = state => ({
 	errorMessage: state.error.message,
+	showBillingAddres: state.data.get('showBillingAddres'),
 });
 
 /* eslint-disable max-len */
 const bottomText = 'You will receive an email confirmation when recipient accepts your gift. Scentbird ships between the 15th and the 18th of every month. Recipient will receive an email confirmation of shipment every month. Please allow 5-7 days for delivery.';
 /* eslint-enable max-len */
 
-@connect(mapStateToProps)
+@connect(mapStateToProps, { setData })
 @CSSModules(styles, { errorWhenNotFound: false })
 export default class General extends Component {
 	static propTypes = {
 		errorMessage: PropTypes.string,
 	};
 
+	toggleTick = () => {
+		this.props.setData(['showBillingAddres'], !this.props.showBillingAddres);
+	}
+
 	render() {
-		const { errorMessage } = this.props;
+		const { errorMessage, showBillingAddres } = this.props;
 
 		return (
 			<div styleName="container">
@@ -54,7 +61,19 @@ export default class General extends Component {
 						<Subscription onlySmallScreen={subscriptionOnlySmallScreen} />
 						<CreateAccount />
 						<Address type="shipping" />
-						<Address type="billing" />
+						<div onClick={this.toggleTick}>
+							<div styleName="tick-container">
+								<div
+									styleName="tick"
+									style={{
+										display: !showBillingAddres ? 'block' : 'none',
+									}}>
+									<Tick color="#fff" />
+								</div>
+							</div>
+							<span styleName="use-this-address">Use this address as my billing address</span>
+						</div>
+						{ showBillingAddres ? <Address type="billing" /> : null }
 						<div styleName="buttons-container">
 							<a href="#" styleName="back-link">Back</a>
 							<button type="button" styleName="button">

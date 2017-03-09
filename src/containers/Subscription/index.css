@@ -58,6 +58,7 @@
 }
 
 .tick {
+	margin-right: 1px;
 }
 
 @media (max-width: 890px) {
