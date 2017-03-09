@@ -62,7 +62,7 @@ module.exports = {
 				test: /\.gif$/,
 				loader: 'file-loader?name=/static/images/[hash].[ext]',
 			}, {
-				test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+				test: /\.(ttf|eot|otf|svg|woff(2)?)(\?[a-z0-9]+)?$/,
 				loader: 'file-loader?name=/static/fonts/[hash].[ext]',
 			},
 		],

@@ -13,9 +13,18 @@ header {
 	flex-wrap: wrap;
 }
 
+.left-column-top {
+	border: 1px solid #e6e6e6;
+}
+
+.left-column-bottom {
+	padding-top: 38px;
+}
+
 .left-column-bottom-small {
 	width: 100%;
 	display: none;
+	padding-top: 38px;
 }
 
 .left-column {
@@ -26,6 +35,52 @@ header {
 .right-column {
 	padding:  0 30px;
 	flex-grow: 1;
+}
+
+.bottom-text {
+	padding-top: 23px;
+}
+
+.title {
+	font-size: 36px;
+	font-weight: 600;
+	line-height: 0.7;
+	margin-bottom: 12px;
+}
+
+.subtitle {
+	color: $roseColor;
+	font-size: 16px;
+	font-weight: 400;
+}
+
+.buttons-container {
+	text-align: right;
+	padding-top: 30px;
+}
+
+.back-link {
+	opacity: 0.4;
+	font-size: 18px;
+	text-decoration: underline;
+	margin-right: 40px;
+}
+
+.button {
+	@add-mixin buttonReset;
+	background: $buttonColor;
+	color: #fff;
+	font-size: 18px;
+	font-weight: 600;
+	line-height: 20px;
+	padding: 17px 30px 17px 58px;
+	line-height: 0.9;
+	cursor: pointer;
+}
+
+.arrow {
+	margin-left: 54px;
+	vertical-align: bottom;
 }
 
 @media (max-width: 890px) {
