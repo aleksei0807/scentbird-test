@@ -1,7 +1,6 @@
 /* @flow */
 import React, { Component, PropTypes } from 'react';
 import CSSModules from 'react-css-modules';
-// import FormsyAutoComplete from '../AutoComplete';
 import AutoComplete from 'material-ui/AutoComplete';
 import styles from './index.css';
 
@@ -31,7 +30,7 @@ export default class AutoInput extends Component {
 		value: PropTypes.any,
 	};
 
-	constructor(...args: Array<*>) {
+	constructor(...args: Array<*>): void {
 		super(...args);
 
 		this.styleProps = {

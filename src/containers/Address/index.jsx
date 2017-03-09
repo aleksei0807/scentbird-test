@@ -17,15 +17,14 @@ import styles from './index.css';
 import countriesJSON from './countries.en_US.json';
 
 
-const googleAPIKey = 'AIzaSyC7MKR8tBlhRTI-RxnePPXyky_atZG2_8Q';
-const countries = [...countriesJSON]; // we should have .each()
-const countriesFormatted = countries.map(v => v.name);
-const codeToCountry = countries.reduce((collect, v) => ({...collect, ...{[v.key]: v.name}}), {});
-const countryToCode = countries.reduce((collect, v) => ({...collect, ...{[v.name]: v.key}}), {});
+const googleAPIKey: string = 'AIzaSyC7MKR8tBlhRTI-RxnePPXyky_atZG2_8Q';
+const countries: Array<{key: string; name: string}> = [...countriesJSON]; // we should have .each()
+const countriesFormatted: Array<string> = countries.map(v => v.name);
+const countryToCode: Object = countries.reduce((collect, v) => (
+	{...collect, ...{[v.name]: v.key}}
+), {});
 
-console.log(countries);
-
-const mapStateToProps = (state, props) => ({
+const mapStateToProps = (state: Object, props: Object) => ({
 	addressData: state.data.get(props.type),
 });
 
@@ -43,7 +42,7 @@ export default class Address extends Component {
 	};
 	/* eslint-enable react/sort-comp */
 
-	static propTypes = {
+	static propTypes: Object = {
 		type: PropTypes.string.isRequired,
 		addressData: PropTypes.object,
 	};
@@ -60,7 +59,7 @@ export default class Address extends Component {
 		};
 	}
 
-	componentDidMount() {
+	componentDidMount(): void {
 		stream((emitter: Emitter<*, *>) => {
 			this.streetEmitter = emitter;
 		})
@@ -68,7 +67,7 @@ export default class Address extends Component {
 		.onValue(this.streetSuggest);
 	}
 
-	setData = (path: Array<string>, value: any) => {
+	setData = (path: Array<string>, value: any): void => {
 		this.props.setData([this.props.type, ...path], value);
 	}
 
@@ -131,11 +130,11 @@ export default class Address extends Component {
 		), {}));
 	})
 
-	countriesFilter = (searchText: string, name: any) => {
-		return searchText !== ''
+	countriesFilter = (searchText: string, name: any): boolean => (
+		searchText !== ''
 			&& (name.toLowerCase().indexOf(searchText.toLowerCase()) !== -1
-			|| countryToCode[name].toLowerCase().indexOf(searchText.toLowerCase()) !== -1);
-	}
+			|| countryToCode[name].toLowerCase().indexOf(searchText.toLowerCase()) !== -1)
+	)
 
 	render() {
 		return (
