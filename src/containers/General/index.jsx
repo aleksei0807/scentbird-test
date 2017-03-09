@@ -4,11 +4,13 @@ import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
 import ErrorComponent from '../../components/Error';
 import CreateAccount from '../CreateAccount';
+import Subscription from '../Subscription';
 import Address from '../Address';
 import Logo from '../../components/Logo';
 import ProductInfo from '../../components/ProductInfo';
 import Chicken from '../../components/Chicken';
 import arrow from './images/arrow.svg';
+import { subscriptionOnlySmallScreen } from '../../../config.json';
 import styles from './index.css';
 
 const mapStateToProps = state => ({
@@ -49,6 +51,7 @@ export default class General extends Component {
 						<h3 styleName="subtitle">
 							Billed monthly. Renews automatically, cancel any time. Free shipping.
 						</h3>
+						<Subscription onlySmallScreen={subscriptionOnlySmallScreen} />
 						<CreateAccount />
 						<Address type="shipping" />
 						<Address type="billing" />

@@ -50,6 +50,9 @@ module.exports = {
 				exclude: /node_modules/,
 				include: __dirname,
 			}, {
+				test: /\.json$/,
+				loader: 'json-loader',
+			}, {
 				test: /\.css$/,
 				loader: ExtractTextPlugin.extract('style-loader', postCssLoader.join('')),
 			}, {

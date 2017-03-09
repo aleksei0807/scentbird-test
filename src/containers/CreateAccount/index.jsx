@@ -34,8 +34,20 @@ export default class CreateAccount extends Component {
 	}
 	/* eslint-enable react/sort-comp */
 
-	setData = (path: Array<string>, value: any) => {
-		this.props.setData(['account', ...path], value);
+	setData = (currentValues: { email: string; password: string; }) => {
+		const { email, password } = currentValues;
+		let prevEmail = '';
+		let prevPassword = '';
+		if (this.props.accountData) {
+			prevEmail = this.props.accountData.get('email');
+			prevPassword = this.props.accountData.get('password');
+		}
+		if (email && email !== prevEmail) {
+			this.props.setData(['account', 'email'], email);
+		}
+		if (password && password !== prevPassword) {
+			this.props.setData(['account', 'password'], password);
+		}
 	}
 
 	inputRequired = (name: string) => () => {
@@ -50,7 +62,7 @@ export default class CreateAccount extends Component {
 		return (
 			<div styleName="container">
 				<h2 styleName="title">Create account</h2>
-				<Form name="account" className={styles.form}>
+				<Form name="account" className={styles.form} onChange={this.setData}>
 					<Input
 						className={`${styles.input} ${styles.left}`}
 						name="email"
@@ -69,7 +81,7 @@ export default class CreateAccount extends Component {
 						onFocus={this.inputRequired('passwordRequired')}
 						validationError="Password should be at least 10 characters long"
 						required={this.state.passwordRequired}
-						validations="isLength:10"
+						validations="minLength:10"
 						/>
 				</Form>
 			</div>
