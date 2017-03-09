@@ -43,6 +43,8 @@ export default class Input extends Component {
 			},
 			style: {
 				height: 50,
+				width: null,
+				display: null,
 			},
 			inputStyle: {
 				margin: 0,
@@ -54,6 +56,7 @@ export default class Input extends Component {
 				border: '2px solid #fd6464',
 				backgroundColor: '#fafafa',
 			},
+			fullWidth: true,
 		};
 		this.value = '';
 		this.state = {
@@ -101,10 +104,12 @@ export default class Input extends Component {
 
 	render() {
 		const props = {...{
-			...this.props,
 			...this.styleProps,
+			...this.props,
 			...{floatingLabelStyle: this.state.floatingLabelStyle},
 		}};
+		const containerClassName = props.className;
+
 		this.customOnChange = props.onChange;
 		this.customOnFocus = props.onFocus;
 		this.customOnBlur = props.onBlur;
@@ -112,14 +117,18 @@ export default class Input extends Component {
 			this.value = props.value;
 		}
 		delete props.styles;
+		delete props.className;
+
 		return (
-			<FormsyText
-				onFocus={this.onFocus}
-				onBlur={this.onBlur}
-				onChange={this.onChange}
-				styleName="input-container"
-				{...props}
-				/>
+			<div className={containerClassName || null}>
+				<FormsyText
+					onFocus={this.onFocus}
+					onBlur={this.onBlur}
+					onChange={this.onChange}
+					styleName="input-container"
+					{...props}
+					/>
+			</div>
 		);
 	}
 }
