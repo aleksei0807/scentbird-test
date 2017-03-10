@@ -1,5 +1,6 @@
 /* @flow */
 import React, { Component, PropTypes } from 'react';
+import type { Element } from 'react'; // eslint-disable-line no-duplicate-imports
 import CSSModules from 'react-css-modules';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
 import styles from './index.css';
@@ -8,7 +9,15 @@ import styles from './index.css';
 export default class Input extends Component {
 	/* eslint-disable react/sort-comp */
 	focused: boolean;
-	styleProps: Object;
+	styleProps: {
+		floatingLabelFocusStyle: Object;
+		style: Object;
+		inputStyle: Object;
+		errorStyle: Object;
+		hintStyle: Object;
+		underlineShow: false; // values required to be compatible
+		fullWidth: true;      // with company style guides
+	};
 	customOnChange: ?Function;
 	customOnBlur: ?Function;
 	customOnFocus: ?Function;
@@ -28,7 +37,7 @@ export default class Input extends Component {
 		value: PropTypes.any,
 	};
 
-	constructor(...args: Array<*>) {
+	constructor(...args: Array<*>): void {
 		super(...args);
 
 		this.styleProps = {
@@ -56,7 +65,6 @@ export default class Input extends Component {
 			errorStyle: {
 				position: 'absolute',
 				bottom: -20,
-				// border: '2px solid #fd6464',
 				color: '#f00',
 			},
 			hintStyle: {
@@ -83,8 +91,7 @@ export default class Input extends Component {
 		}
 	}
 
-	calculateOpacity = (v: string) => {
-		console.log(v === '', this.focused);
+	calculateOpacity = (v: string): void => {
 		this.setState({
 			floatingLabelStyle: {
 				...this.state.floatingLabelStyle,
@@ -93,7 +100,7 @@ export default class Input extends Component {
 		});
 	}
 
-	onFocus = (...args: Array<*>) => {
+	onFocus = (...args: Array<*>): void => {
 		this.focused = true;
 		this.calculateOpacity(this.value);
 		if (this.customOnFocus) {
@@ -101,15 +108,19 @@ export default class Input extends Component {
 		}
 	}
 
-	onBlur = (...args: Array<*>) => {
+	onBlur = (e: UIEvent): void => {
 		this.focused = false;
-		this.calculateOpacity(this.value);
+		let newValue: string = '';
+		if (e.target instanceof HTMLInputElement) {
+			newValue = e.target.value;
+		}
+		this.onChange(e, newValue);
 		if (this.customOnBlur) {
-			this.customOnBlur(...args);
+			this.customOnBlur(e);
 		}
 	}
 
-	render() {
+	render(): Element<{className: ?string}> {
 		const props = {...{
 			...this.styleProps,
 			...this.props,

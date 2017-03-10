@@ -7,6 +7,7 @@ import { stream } from 'kefir';
 
 /* eslint-disable no-duplicate-imports */
 import type { Emitter } from 'kefir';
+import type { Element } from 'react';
 /* eslint-enable no-duplicate-imports */
 
 import { setData } from '../../actions/data';
@@ -24,7 +25,7 @@ const countryToCode: Object = countries.reduce((collect, v) => (
 	{...collect, ...{[v.name]: v.key}}
 ), {});
 
-const mapStateToProps = (state: Object, props: Object) => ({
+const mapStateToProps = (state: Object, props: Object): Object => ({
 	addressData: state.data.get(props.type),
 });
 
@@ -47,7 +48,7 @@ export default class Address extends Component {
 		addressData: PropTypes.object,
 	};
 
-	constructor(...args: Array<*>) {
+	constructor(...args: Array<*>): void {
 		super(...args);
 
 		this.state = {
@@ -71,6 +72,20 @@ export default class Address extends Component {
 		this.props.setData([this.props.type, ...path], value);
 	}
 
+	getData = (path: string, defaultValue: any): any => {
+		if (this.props.addressData) {
+			return this.props.addressData.get(path) || defaultValue;
+		}
+		return defaultValue;
+	}
+
+	getInData = (path: Array<string>, defaultValue: any): any => {
+		if (this.props.addressData) {
+			return this.props.addressData.getIn(path) || defaultValue;
+		}
+		return defaultValue;
+	}
+
 	isZipValid = (form: Object, field: string): boolean | string => {
 		if (/[a-zA-Z0-9-\s]{4,}/.test(field)) {
 			this.setState({
@@ -85,15 +100,18 @@ export default class Address extends Component {
 	}
 
 	zipChanged = (e: {target: { value: string }}): void => {
-		this.isZipValid({}, e.target.value);
+		if (this.isZipValid({}, e.target.value) === true) {
+			this.setData(['zip'], e.target.value);
+		}
 	}
-	
+
 	streetSuggest = (e: Object): void => {
 		if (!e.searchText) {
 			return;
 		}
-		const q = e.searchText;
+		const q = encodeURIComponent(e.searchText);
 		const addr = `https://maps.googleapis.com/maps/api/geocode/json?address=${q}&key=${googleAPIKey}`;
+
 		fetch(addr, {
 			method: 'GET',
 		})
@@ -112,6 +130,9 @@ export default class Address extends Component {
 				streetSuggestData: res.formatted,
 				streetRawData: res.raw,
 			});
+		})
+		.catch((reason) => {
+			console.error(reason);
 		});
 	}
 
@@ -136,7 +157,7 @@ export default class Address extends Component {
 			|| countryToCode[name].toLowerCase().indexOf(searchText.toLowerCase()) !== -1)
 	)
 
-	render() {
+	render(): Element<{styleName: string}> {
 		return (
 			<div styleName="container">
 				<h1 styleName="formName">{this.props.type} address</h1>
@@ -165,6 +186,7 @@ export default class Address extends Component {
 								validations={{ isZipValid: this.isZipValid}}
 								name="zip"
 								onChange={this.zipChanged}
+								value={this.getData('zip')}
 								floatingLabelText="Zip code"
 								/>
 							<Tick

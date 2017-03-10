@@ -1,5 +1,6 @@
 /* @flow */
 import React, { Component, PropTypes } from 'react';
+import type { Element } from 'react'; // eslint-disable-line no-duplicate-imports
 import CSSModules from 'react-css-modules';
 import AutoComplete from 'material-ui/AutoComplete';
 import styles from './index.css';
@@ -89,13 +90,12 @@ export default class AutoInput extends Component {
 	onUpdateInput = (searchText: string, dataSource: Array<*>, params: Object): void => {
 		this.value = searchText;
 		this.calculateOpacity(searchText);
-		if (this.customOnNewRequest) {
-			this.customOnNewRequest(searchText, dataSource, params);
+		if (this.customOnUpdateInput) {
+			this.customOnUpdateInput(searchText, dataSource, params);
 		}
 	}
 
-	calculateOpacity = (v: string) => {
-		console.log(v === '', this.focused);
+	calculateOpacity = (v: string): void => {
 		this.setState({
 			floatingLabelStyle: {
 				...this.state.floatingLabelStyle,
@@ -104,7 +104,7 @@ export default class AutoInput extends Component {
 		});
 	}
 
-	onFocus = (...args: Array<*>) => {
+	onFocus = (...args: Array<*>): void => {
 		this.focused = true;
 		this.calculateOpacity(this.value);
 		if (this.customOnFocus) {
@@ -112,7 +112,7 @@ export default class AutoInput extends Component {
 		}
 	}
 
-	onBlur = (...args: Array<*>) => {
+	onBlur = (...args: Array<*>): void => {
 		this.focused = false;
 		this.calculateOpacity(this.value);
 		if (this.customOnBlur) {
@@ -120,7 +120,7 @@ export default class AutoInput extends Component {
 		}
 	}
 
-	render() {
+	render(): Element<{className: ?string}> {
 		const props = {...{
 			...this.styleProps,
 			...this.props,
@@ -128,12 +128,12 @@ export default class AutoInput extends Component {
 		}};
 		const containerClassName = props.className;
 
-		this.customOnNewRequest = props.onNewRequest;
-		this.customOnUpdateInput = props.onUpdateInput;
-		this.customOnFocus = props.onFocus;
-		this.customOnBlur = props.onBlur;
-		if (props.value) {
-			this.value = props.value;
+		this.customOnNewRequest = this.props.onNewRequest;
+		this.customOnUpdateInput = this.props.onUpdateInput;
+		this.customOnFocus = this.props.onFocus;
+		this.customOnBlur = this.props.onBlur;
+		if (this.props.value) {
+			this.value = this.props.value;
 		}
 		delete props.styles;
 		delete props.className;
