@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Form } from 'formsy';
 import { setData } from '../../actions/data';
 import Input from '../../components/Input';
+import FaqContent from '../../components/FaqContent';
 import safe from './images/safe.svg';
 import cards from './images/cards.png';
 import styles from './index.css';
@@ -14,14 +15,46 @@ const mapStateToProps = state => ({
 });
 
 @connect(mapStateToProps, { setData })
-@CSSModules(styles, { errorWhenNotFound: false })
+@CSSModules(styles, { errorWhenNotFound: false, allowMultiple: true })
 export default class Payment extends Component {
 	static propTypes = {
 		paymentData: PropTypes.object,
 	};
 
+	/* eslint-disable react/sort-comp */
+	state: {
+		showFaqContent: boolean;
+	};
+
+	constructor(...args: Array<*>) {
+		super(...args);
+
+		this.state = {
+			showFaqContent: false,
+		};
+	}
+	/* eslint-enable react/sort-comp */
+
 	setData = (path: Array<string>, value: any) => {
 		this.props.setData(['payment', ...path], value);
+	}
+
+	toggleFaqContent = () => {
+		if (this.state.showFaqContent) {
+			this.setState({
+				showFaqContent: false,
+			});
+		} else {
+			this.setState({
+				showFaqContent: true,
+			});
+		}
+	}
+
+	hideFaqContent = () => {
+		this.setState({
+			showFaqContent: false,
+		});
 	}
 
 	render() {
@@ -51,7 +84,13 @@ export default class Payment extends Component {
 								name="security-code"
 								floatingLabelText="Security code"
 								/>
-							<span styleName="faq"></span>
+							<div styleName={this.state.showFaqContent ? 'faq show-content' : 'faq'}>
+								<span styleName="faq-span" onClick={this.toggleFaqContent}></span>
+								<FaqContent
+									className={styles['faq-content']}
+									hide={this.hideFaqContent}
+									/>
+							</div>
 						</div>
 					</Form>
 				</div>

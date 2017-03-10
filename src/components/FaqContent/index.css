@@ -1,0 +1,57 @@
+.title {
+	font-size: 24px;
+	padding-bottom: 20px;
+}
+
+.subtitle {
+	color: #4a4a4a;
+	font-size: 14px;
+}
+
+.close {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	cursor: pointer;
+}
+
+.content {
+	display: flex;
+	align-items: stretch;
+	padding-top: 30px;
+}
+
+.left {
+	flex-grow: 1;
+	padding-right: 30px;
+}
+
+.right {
+	flex-grow: 1;
+	padding-left: 30px;
+}
+
+.line {
+	opacity: 0.31;
+	border: 1px solid #979797;
+}
+
+.card-prev {
+	vertical-align: middle;
+	margin-left: 5px;
+}
+
+.card-name {
+	font-size: 16px;
+	vertical-align: middle;
+	margin-left: 15px;
+}
+
+.card-full {
+	padding-top: 10px;
+}
+
+.bottom-text {
+	color: #9b9b9b;
+	margin-left: 5px;
+}

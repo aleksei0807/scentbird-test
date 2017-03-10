@@ -1,3 +1,25 @@
+@keyframes show {
+	from {
+		display: none;
+		opacity: 0;
+	}
+	to {
+		display: block;
+		opacity: 1;
+	}
+}
+
+@keyframes hide {
+	from {
+		display: block;
+		opacity: 1;
+	}
+	to {
+		display: none;
+		opacity: 0;
+	}
+}
+
 .container {
 	padding-top: 40px;
 }
@@ -21,13 +43,37 @@
 	align-items: center;
 }
 
+.faq-content {
+	opacity: 0;
+	display: none;
+	animation: hide 200ms cubic-bezier(0.1, 0.7, 1.0, 0.1);
+	position: absolute;
+	background-color: white;
+	border: 1px solid #ddd;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+	bottom: 43px;
+	right: 7px;
+	width: 630px;
+	padding: 30px 40px;
+}
+
 .faq {
-	font-family: FontAwesome;
-	font-size: 20px;
-	font-weight: 400;
 	margin-top: -20px;
 	margin-left: 11px;
-	cursor: default;
+	position: relative;
+
+	& .faq-span {
+		font-family: FontAwesome;
+		font-size: 20px;
+		font-weight: 400;
+		cursor: pointer;
+	}
+
+	&.show-content .faq-content {
+		animation: show 200ms cubic-bezier(0.1, 0.7, 1.0, 0.1);
+		opacity: 1;
+		display: block;
+	}
 }
 
 .credit-card-number {
