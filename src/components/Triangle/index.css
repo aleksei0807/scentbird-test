@@ -1,0 +1,28 @@
+.container {
+	bottom: -20px;
+	right: -10px;
+	position: absolute;
+	overflow: hidden;
+	width: 40px;
+	height: 20px;
+	
+
+	& .triangle {
+		box-sizing: border-box;
+		border: 20px solid #fff;
+		border-color: transparent #fff transparent transparent;
+		box-shadow: -2px 1px 4px 1px rgba(0, 0, 0, 0.2);
+		transform: translateX(-10px);
+		margin-top: -20px;
+
+		& .shadow {
+			position: absolute;
+			box-shadow: -1px 0px 1px 0px rgba(0, 0, 0, 0.2);
+			height: 36px;
+			width: 1px;
+			right: -8px;
+			transform: rotate(-45deg);
+			bottom: -24px;
+		}
+	}
+}
