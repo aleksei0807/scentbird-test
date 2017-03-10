@@ -43,7 +43,7 @@ export default class Input extends Component {
 		this.styleProps = {
 			underlineShow: false,
 			floatingLabelFocusStyle: {
-				backgroundColor: '#fff',
+				background: 'transparent',
 				left: 10,
 				paddingLeft: 5,
 				paddingRight: 5,
@@ -75,7 +75,7 @@ export default class Input extends Component {
 		this.value = '';
 		this.state = {
 			floatingLabelStyle: {
-				backgroundColor: 'transparent',
+				background: 'transparent',
 				marginLeft: 0,
 				top: 14,
 				left: 15,

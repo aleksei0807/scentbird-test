@@ -20,6 +20,7 @@
     "formsy-react": "^0.19.2",
     "google-maps-api": "^2.0.1",
     "immutable": "^3.8.1",
+    "jsonp": "^0.2.1",
     "kefir": "^3.7.1",
     "keycode": "^2.1.8",
     "material-ui": "^0.17.0",
@@ -31,7 +32,8 @@
     "react-redux": "^5.0.1",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
-    "redux-thunk": "^2.1.0"
+    "redux-thunk": "^2.1.0",
+    "transliterator": "^0.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.1",

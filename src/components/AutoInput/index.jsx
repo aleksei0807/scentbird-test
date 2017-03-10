@@ -15,6 +15,8 @@ export default class AutoInput extends Component {
 	customOnBlur: ?Function;
 	customOnFocus: ?Function;
 	value: string;
+	prestine: boolean;
+	requiredRequested: boolean;
 	state: {
 		floatingLabelStyle: Object;
 	};
@@ -29,11 +31,14 @@ export default class AutoInput extends Component {
 		onFocus: PropTypes.func,
 		onKeyDown: PropTypes.func,
 		value: PropTypes.any,
+		required: PropTypes.bool,
 	};
 
 	constructor(...args: Array<*>): void {
 		super(...args);
-
+		this.focused = false;
+		this.prestine = true;
+		this.requiredRequested = false;
 		this.styleProps = {
 			underlineShow: false,
 			floatingLabelFocusStyle: {
@@ -81,6 +86,9 @@ export default class AutoInput extends Component {
 	}
 
 	onNewRequest = (choosen: string, index: number): void => {
+		if (this.prestine) {
+			return;
+		}
 		this.value = choosen;
 		this.calculateOpacity(choosen);
 		if (this.customOnNewRequest) {
@@ -88,6 +96,9 @@ export default class AutoInput extends Component {
 		}
 	}
 	onUpdateInput = (searchText: string, dataSource: Array<*>, params: Object): void => {
+		if (this.prestine) {
+			return;
+		}
 		this.value = searchText;
 		this.calculateOpacity(searchText);
 		if (this.customOnUpdateInput) {
@@ -106,6 +117,7 @@ export default class AutoInput extends Component {
 
 	onFocus = (...args: Array<*>): void => {
 		this.focused = true;
+		this.prestine = false;
 		this.calculateOpacity(this.value);
 		if (this.customOnFocus) {
 			this.customOnFocus(...args);
@@ -114,11 +126,16 @@ export default class AutoInput extends Component {
 
 	onBlur = (...args: Array<*>): void => {
 		this.focused = false;
+		this.prestine = false;
 		this.calculateOpacity(this.value);
 		if (this.customOnBlur) {
 			this.customOnBlur(...args);
 		}
 	}
+
+	required = (): boolean => (
+		!this.prestine && this.requiredRequested
+	)
 
 	render(): Element<{className: ?string}> {
 		const props = {...{
@@ -132,10 +149,14 @@ export default class AutoInput extends Component {
 		this.customOnUpdateInput = this.props.onUpdateInput;
 		this.customOnFocus = this.props.onFocus;
 		this.customOnBlur = this.props.onBlur;
+		if (this.props.required) {
+			this.requiredRequested = true;
+		}
 		if (this.props.value) {
 			this.value = this.props.value;
 		}
 		delete props.styles;
+		delete props.required;
 		delete props.className;
 		delete props.validationError;
 		delete props.validationErrors;
@@ -146,6 +167,8 @@ export default class AutoInput extends Component {
 			<div className={containerClassName || null}>
 				<AutoComplete
 					{...props}
+					required={this.required()}
+					open={this.focused}
 					onFocus={this.onFocus}
 					onBlur={this.onBlur}
 					onNewRequest={this.onNewRequest}

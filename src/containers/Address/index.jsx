@@ -15,15 +15,19 @@ import Input from '../../components/Input';
 import AutoInput from '../../components/AutoInput';
 import Tick from '../../components/Tick';
 import styles from './index.css';
-import countriesJSON from './countries.en_US.json';
-
+// import countriesJSON from './countries.en_US.json';
+import tr from '../../utils/transliterator';
+import getCountries from '../../utils/getCountries';
+import getRegions from '../../utils/getRegions';
 
 const googleAPIKey: string = 'AIzaSyC7MKR8tBlhRTI-RxnePPXyky_atZG2_8Q';
-const countries: Array<{key: string; name: string}> = [...countriesJSON]; // we should have .each()
-const countriesFormatted: Array<string> = countries.map(v => v.name);
-const countryToCode: Object = countries.reduce((collect, v) => (
-	{...collect, ...{[v.name]: v.key}}
-), {});
+
+// const
+// countries: Array<{key: string; name: string}> = [...countriesJSON]; // we should have .each()
+// const countriesFormatted: Array<string> = countries.map(v => v.name);
+// const countryToCode: Object = countries.reduce((collect, v) => (
+	// {...collect, ...{[v.name]: v.key}}
+// ), {});
 
 const mapStateToProps = (state: Object, props: Object): Object => ({
 	addressData: state.data.get(props.type),
@@ -40,6 +44,12 @@ export default class Address extends Component {
 		streetRawData: {
 			results: Array<*>;
 		};
+		countries: Array<Object>;
+		countriesList: Array<*>;
+		countryNameToCountryObject: Object;
+		regions: Array<Object>;
+		regionsList: Array<*>;
+		regionNameToRegionObject: Object;
 	};
 	/* eslint-enable react/sort-comp */
 
@@ -57,6 +67,12 @@ export default class Address extends Component {
 			streetRawData: {
 				results: [],
 			},
+			countries: [],
+			countriesList: [],
+			countryNameToCountryObject: {},
+			regions: [],
+			regionsList: [],
+			regionNameToRegionObject: {},
 		};
 	}
 
@@ -66,6 +82,27 @@ export default class Address extends Component {
 		})
 		.debounce(400)
 		.onValue(this.streetSuggest);
+
+		getCountries((err, data) => {
+			this.setState({
+				countries: data.response.items,
+				countriesList: data.response.items.map(v => v.title),
+				countryNameToCountryObject: data.response.items.reduce(
+					(collector, v) => ({ ...collector, ...{[v.name]: v}}),
+					{}
+				),
+			});
+		});
+		getRegions((err, data) => {
+			this.setState({
+				regions: data.response.items,
+				regionsList: data.response.items.map(v => v.title),
+				regionNameToRegionObject: data.response.items.reduce(
+					(collector, v) => ({ ...collector, ...{[v.name]: v}}),
+					{}
+				),
+			});
+		});
 	}
 
 	setData = (path: Array<string>, value: any): void => {
@@ -100,9 +137,7 @@ export default class Address extends Component {
 	}
 
 	zipChanged = (e: {target: { value: string }}): void => {
-		if (this.isZipValid({}, e.target.value) === true) {
-			this.setData(['zip'], e.target.value);
-		}
+		this.setData(['zip'], e.target.value);
 	}
 
 	streetSuggest = (e: Object): void => {
@@ -143,19 +178,47 @@ export default class Address extends Component {
 	}
 
 	streetChoosed = (data: {results: Array<*>}) => ((selectedText: string, idx: number) => {
-		console.log(data.results[idx].address_components.reduce((collector: Object, v: Object) => (
-			{
-				...collector,
-				...{[v.types[0]]: v},
-			}
-		), {}));
+		// console.log(data.results[idx].address_components.reduce((collector: Object, v: Object) => (
+		// 	{
+		// 		...collector,
+		// 		...{[v.types[0]]: v},
+		// 	}
+		// ), {}));
 	})
 
-	countriesFilter = (searchText: string, name: any): boolean => (
-		searchText !== ''
-			&& (name.toLowerCase().indexOf(searchText.toLowerCase()) !== -1
-			|| countryToCode[name].toLowerCase().indexOf(searchText.toLowerCase()) !== -1)
+	countryShouldBeInList = (searchText: string) => (
+		(v: Object) => {
+			const passed = v.title.toLowerCase().indexOf(searchText.toLowerCase()) !== -1
+			|| v.title.toLowerCase().indexOf(tr(searchText).toLowerCase()) !== -1
+			|| tr(v.title).toLowerCase().indexOf(tr(searchText).toLowerCase()) !== -1
+			|| tr(v.title).toLowerCase().indexOf(searchText.toLowerCase()) !== -1
+			|| tr(v.title).toLowerCase() === tr(searchText).toLowerCase()
+			|| v.title.toLowerCase() === searchText.toLowerCase()
+			|| v.title.toLowerCase() === tr(searchText).toLowerCase()
+			|| tr(v.title).toLowerCase() === searchText.toLowerCase();
+			return passed;
+		}
 	)
+
+	countryUpdate = (searchText: string): void => {
+		if (searchText === '') {
+			this.setState({
+				countriesList: this.state.countries.map(v => v.title),
+			});
+		}
+		const cl = this.state.countries
+		.filter(this.countryShouldBeInList(searchText))
+		.map((v) => (
+			v.title
+		));
+		this.setState({
+			countriesList: cl,
+		});
+	}
+
+	countryChoosed = (countryName: string): void => {
+		this.setData(['country'], this.state.countryNameToCountryObject[countryName]);
+	}
 
 	render(): Element<{styleName: string}> {
 		return (
@@ -194,23 +257,31 @@ export default class Address extends Component {
 								color="rgba(255, 69, 143, 0.6)"
 								/>
 						</div>
-						<Input
+						<AutoInput
+							dataSource={this.state.regionsList}
 							styleName="col-1of3 field"
-							name="apt1"
-							floatingLabelText="Apt/Suite (Optional)"
+							name="region"
+							floatingLabelText="Region / State"
+							disabled={this.getData('country', true)}
 							/>
 						<Input
 							styleName="col-1of3 field"
-							name="apt2"
-							floatingLabelText="Apt/Suite (Optional)"
+							name="city"
+							floatingLabelText="City"
+							disabled={this.getData('country', true) || this.getData('region', true)}
+							filter={() => true}
 							/>
 					</div>
 					<AutoInput
-						dataSource={countriesFormatted}
-						filter={this.countriesFilter}
+						dataSource={this.state.countriesList}
+						onUpdateInput={this.countryUpdate}
+						onNewRequest={this.streetChoosed(this.state.streetRawData)}
 						styleName="country field"
 						name="country"
 						floatingLabelText="Country"
+						openOnFocus
+						required
+						filter={() => true}
 						/>
 				</Form>
 			</div>
