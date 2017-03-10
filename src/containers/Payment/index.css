@@ -1,0 +1,83 @@
+.container {
+	padding-top: 40px;
+}
+
+.title {
+	font-size: 24px;
+	font-weight: 400;
+	padding-bottom: 20px;
+}
+
+.content {
+	background-color: #fafafa;
+	border: 1px solid #e6e6e6;
+	padding: 20px 30px 30px 30px;
+}
+
+.top {
+	padding-bottom: 22px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.faq {
+	font-family: FontAwesome;
+	font-size: 20px;
+	font-weight: 400;
+	margin-top: -20px;
+	margin-left: 11px;
+	cursor: default;
+}
+
+.credit-card-number {
+	margin-right: 20px;
+	flex-grow: 1;
+	position: relative;
+}
+
+.security-code {
+	flex-basis: 168px;
+}
+
+.second-form-wrapper {
+	display: flex;
+	align-items: center;
+}
+
+.cards {
+	width: 144px;
+	height: 21px;
+}
+
+.lock {
+	position: absolute;
+	top: 15px;
+	right: 20px;
+	color: #ddd;
+	font-family: FontAwesome;
+	font-size: 20px;
+	font-weight: 400;
+	cursor: default;
+}
+
+.numberInput {
+	& input {
+		padding-right: 50px !important;
+	}
+}
+
+.safe {
+	color: #299501;
+
+	& img {
+		vertical-align: middle;
+		margin-right: 11px;
+	}
+
+	& span {
+		opacity: 0.6;
+		font-weight: 600;
+		line-height: 20px;
+	}
+}
