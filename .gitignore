@@ -3,3 +3,4 @@ node_modules
 dist
 /scentbird-test
 /vendor
+/flow-typed
