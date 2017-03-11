@@ -187,8 +187,8 @@ export default class Address extends Component {
 		}
 	}
 
-	streetChoosed = (data: {results: Array<*>}) => ((selectedText: string, idx: number) => {
-		this.setData('street', selectedText);
+	streetChoosed = () => ((selectedText: string) => {
+		this.setData(['street'], selectedText);
 	})
 
 	countryShouldBeInList = (searchText: string) => (
@@ -267,7 +267,7 @@ export default class Address extends Component {
 
 	regionBlur = () => {
 		const r = this.getData('region');
-		if (r && r.title === this.regionState
+		if ((r && r.title === this.regionState)
 			|| this.state.regionNameToRegionObject) {
 			return;
 		}
@@ -288,7 +288,7 @@ export default class Address extends Component {
 	}
 	countryBlur = () => {
 		const c = this.getData('country');
-		if (c && c.title === this.countryState
+		if ((c && c.title === this.countryState)
 			|| !this.state.countryNameToCountryObject) {
 			return;
 		}
@@ -317,7 +317,7 @@ export default class Address extends Component {
 
 	cityBlur = () => {
 		const c = this.getData('city');
-		if (c && c.title === this.cityState
+		if ((c && c.title === this.cityState)
 			|| !this.state.cityNameToCityObject) {
 			console.log('return');
 			return;
