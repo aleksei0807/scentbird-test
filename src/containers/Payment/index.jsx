@@ -67,11 +67,14 @@ export default class Payment extends Component {
 	}
 
 	toggleFaqContent = () => {
+		const htmlel = document.getElementsByTagName('html')[0];
 		if (this.state.showFaqContent) {
+			htmlel.classList.remove('faq-content');
 			this.setState({
 				showFaqContent: false,
 			});
 		} else {
+			htmlel.classList.add('faq-content');
 			this.setState({
 				showFaqContent: true,
 			});
@@ -79,6 +82,8 @@ export default class Payment extends Component {
 	}
 
 	hideFaqContent = () => {
+		const htmlel = document.getElementsByTagName('html')[0];
+		htmlel.classList.remove('faq-content');
 		this.setState({
 			showFaqContent: false,
 		});
@@ -237,32 +242,34 @@ export default class Payment extends Component {
 									/>
 								<div styleName="lock"></div>
 							</div>
-							<Input
-								styleName="security-code"
-								name="securityCode"
-								floatingLabelText="Security code"
-								validations={{
-									cvvValid: this.cvvValid,
-								}}
-								white
-								required
-								/>
-							<div styleName={this.state.showFaqContent ? 'faq show-content' : 'faq'}>
-								<span styleName="faq-span" onClick={this.toggleFaqContent}></span>
-								<FaqContent
-									className={styles['faq-content']}
-									hide={this.hideFaqContent}
+							<div styleName="security-code-wrapper">
+								<Input
+									styleName="security-code"
+									name="securityCode"
+									floatingLabelText="Security code"
+									validations={{
+										cvvValid: this.cvvValid,
+									}}
+									white
+									required
 									/>
+								<div styleName={this.state.showFaqContent ? 'faq show-content' : 'faq'}>
+									<span styleName="faq-span" onClick={this.toggleFaqContent}></span>
+									<FaqContent
+										className={styles['faq-content']}
+										hide={this.hideFaqContent}
+										/>
+								</div>
 							</div>
-						</div>
-						<div styleName="expiration-wrapper">
 							<AutoInput
 								name="expMonth"
 								styleName="expMonth"
+								floatingLabelText="Month"
 								dataSource={months}
 								filter={() => true}
 								onUpdateInput={this.expMonthChange}
 								onNewRequest={this.expMonthChange}
+								errorClassName={styles['exp-error-left']}
 								anchorOrigin={{ horizontal: 'left', vertical: 'top'}}
 								targetOrigin={{ horizontal: 'left', vertical: 'bottom'}}
 								popoverProps={{ style: { height: 200, overflow: 'auto' } }}
@@ -274,10 +281,12 @@ export default class Payment extends Component {
 							<AutoInput
 								name="expYear"
 								styleName="expYear"
+								floatingLabelText="Year"
 								dataSource={years}
 								filter={() => true}
 								onUpdateInput={this.expYearChange}
 								onNewRequest={this.expYearChange}
+								errorClassName={styles['exp-error']}
 								validations={{ expValidate: this.expValidate }}
 								anchorOrigin={{ horizontal: 'left', vertical: 'top'}}
 								targetOrigin={{ horizontal: 'left', vertical: 'bottom'}}

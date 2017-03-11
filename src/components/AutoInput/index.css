@@ -49,3 +49,18 @@
 		right: 40px;
 	}
 }
+
+@media (max-width: 610px) {
+	.arrow.more-margin {
+		right: 20px;
+	}
+	.input-container {
+		display: block !important;
+		& > input {
+			height: auto !important;
+		}
+	}
+	.error-text {
+		bottom: 0 !important;
+	}
+}

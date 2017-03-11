@@ -466,6 +466,7 @@ export default class Address extends Component {
 						onBlur={this.countryBlur}
 						styleName="country field"
 						name="country"
+						errorClassName={styles['country-error']}
 						floatingLabelText="Country"
 						openOnFocus
 						required

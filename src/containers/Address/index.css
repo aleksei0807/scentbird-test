@@ -21,9 +21,7 @@
 	width: 100%;
 }
 
-.field {
-	// display: inline-block;
-}
+.field {}
 
 .firstName {
 	padding-right: 10px;
@@ -85,4 +83,37 @@
 }
 .phone-text {
 	text-align: center;
+}
+
+@media (max-width: 1040px) {
+	.container {
+		padding-top: 10px;
+	}
+}
+@media (max-width: 610px) {
+	.group {
+		flex-direction: column;
+		& > * {
+			width: 100%;
+			margin-left: 0;
+			margin-right: 0;
+			padding-left: 0;
+			padding-right: 0 !important;
+		}
+	}
+	.field {
+		height: auto !important;
+		& > div {
+			height: auto !important;
+		}
+	}
+	.country-error {
+		bottom: -20px !important;
+	}
+	.phone-container {
+		padding-top: 0;
+	}
+	.phone-text {
+		display: none;
+	}
 }

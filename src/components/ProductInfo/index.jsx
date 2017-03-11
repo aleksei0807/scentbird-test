@@ -72,7 +72,7 @@ export default class ProductInfo extends Component {
 						<span styleName="total">$25.00</span>
 					</div>
 					<div styleName="have-a-coupon">
-						Have a <a href="#">coupon code</a>?
+						Have a <a href="#"><div styleName="dashed" />coupon code</a>?
 					</div>
 				</div>
 			</div>

@@ -20,6 +20,10 @@
 	}
 }
 
+:global(html.faq-content) {
+	overflow: hidden;
+}
+
 .container {
 	padding-top: 40px;
 }
@@ -77,23 +81,26 @@
 }
 
 .credit-card-number {
-	margin-right: 20px;
+	padding-right: 20px;
 	flex-grow: 1;
 	position: relative;
+	width: 70%;
 }
 
 .security-code {
-	flex-basis: 168px;
 }
 
-.second-form-wrapper {
-	display: flex;
-	align-items: center;
+/*.second-form-wrapper {
 }
 
 .expiration-wrapper {
 	align-items: center;
 	display: flex;
+}*/
+.second-form-wrapper {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
 }
 
 .cards {
@@ -112,7 +119,7 @@
 .lock {
 	position: absolute;
 	top: 15px;
-	right: 20px;
+	right: 40px;
 	color: #ddd;
 	font-family: FontAwesome;
 	font-size: 20px;
@@ -151,4 +158,104 @@
 .expText {
 	color: #9b9b9b;
 	font-size: 18px;
+}
+
+.security-code-wrapper {
+	display: flex;
+	align-items: center;
+	width: 30%;
+}
+
+
+@media (max-width: 1320px) and (min-width: 1041px),
+		(max-width: 610px) {
+	.top {
+		display: block;
+		text-align: left;
+	}
+	.safe {
+		width: 100%;
+		margin-bottom: 15px;
+	}
+	.cards {
+		width: 100%;
+	}
+	.credit-card-number {
+		width: 100%;
+		padding-right: 0;
+	}
+	.lock {
+		right: 20px;
+	}
+	.security-code-wrapper {
+		margin-top: 20px;
+		order: 5;
+		width: 70%;
+	}
+}
+
+@media (max-width: 1040px) {
+	.container {
+		padding-top: 45px;
+	}
+}
+
+@media (max-width: 610px) {
+	.expText {
+		display: none;
+	}
+	.expMonth, .expYear {
+		width: 50%;
+		margin-left: 0;
+		margin-right: 0;
+	}
+	.expMonth {
+		padding-right: 10px;
+	}
+	.expYear {
+		padding-left: 10px;
+	}
+
+	.exp-error {
+		bottom: -20px !important;
+		right: 0;
+		left: initial !important;
+	}
+
+	.exp-error-left {
+		bottom: -20px !important;
+		left: 0;
+		right: initial !important;
+	}
+	/*.credit-card-number {
+		flex-grow: 1;
+	}*/
+}
+
+@media (max-width: 359px) {
+	.content {
+		padding: 15px;
+		margin-left: -15px;
+		margin-right: -15px;
+	}
+	.safe {
+		font-size: 12px;
+	}
+	.lock {
+		opacity: 1;
+		color: #666;
+	}
+}
+
+@media (max-width: 730px) {
+	.faq-content {
+		position: fixed;
+		bottom: 0;
+		right: 0;
+		max-width: 100%;
+		z-index: 9000;
+		width: 100%;
+		height: 100%;
+		overflow-y: auto;
+	}
 }

@@ -26,6 +26,14 @@ header {
 	padding-top: 38px;
 }
 
+.title-wrapper-small {
+	display: none;
+}
+
+.title-wrapper {
+	display: block;
+}
+
 .left-column {
 	width: 400px;
 	margin-right: 40px;
@@ -43,7 +51,8 @@ header {
 .title {
 	font-size: 36px;
 	font-weight: 600;
-	line-height: 0.7;
+	line-height: 1;
+	margin-top: -6px;
 	margin-bottom: 12px;
 }
 
@@ -106,7 +115,25 @@ header {
 	margin-left: 8px;
 }
 
-@media (max-width: 1000px) {
+.title-xs {
+	display: none;
+}
+
+@media (max-width: 1150px) {
+	.container {
+		padding: 18px 20px;
+	}
+}
+
+@media (max-width: 1040px) {
+	.title-wrapper-small {
+		display: block;
+		padding-bottom: 40px;
+	}
+
+	.title-wrapper {
+		display: none;
+	}
 	.content {
 		flex-wrap: wrap;
 	}
@@ -130,14 +157,49 @@ header {
 	}
 	.left-column-bottom-small {
 		display: block;
+		& img {
+			float: left;
+			margin-right: 20px;
+		}
 	}
 }
 
-@media (max-width: 360px) {
-	header {
-		padding-bottom: 30px;
+@media (max-width: 610px) {
+	.title {
+		display: none;
+	}
+	.title-xs {
+		font-size: 22px;
+		display: block;
 	}
 	.container {
 		padding: 18px 15px;
+	}
+	header {
+		padding-bottom: 30px;
+	}
+	.left-column-top {
+		border: none;
+	}
+	.billing-address-toggle-container {
+		width: 100%;
+		text-align: left;
+	}
+	.left-column-bottom-small {
+		display: flex;
+		flex-direction: column-reverse;
+		& img {
+			float: none;
+			max-width: 100%;
+		}
+	}
+}
+
+@media (max-width: 359px) {
+	.back-link {
+		display: none;
+	}
+	.button {
+		width: 100%;
 	}
 }

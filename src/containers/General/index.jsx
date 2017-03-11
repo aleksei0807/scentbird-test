@@ -29,6 +29,16 @@ const mapStateToProps = state => ({
 const bottomText = 'You will receive an email confirmation when recipient accepts your gift. Scentbird ships between the 15th and the 18th of every month. Recipient will receive an email confirmation of shipment every month. Please allow 5-7 days for delivery.';
 /* eslint-enable max-len */
 
+const TitleWrapper = (props: Object) => (
+	<div className={props.small ? styles['title-wrapper-small'] : styles['title-wrapper']}>
+		<h1 className={styles['title-xs']}>MONTHLY SUBSCRIPTION</h1>
+		<h1 className={styles.title}>MONTH-TO-MONTH SUBSCRIPTION</h1>
+		<h3 className={styles.subtitle}>
+			Billed monthly. Renews automatically, cancel any time. Free shipping.
+		</h3>
+	</div>
+);
+
 @connect(mapStateToProps, { setData })
 @CSSModules(styles, { errorWhenNotFound: false })
 export default class General extends Component {
@@ -50,6 +60,7 @@ export default class General extends Component {
 					<Logo />
 				</header>
 				<div styleName="content">
+					<TitleWrapper small />
 					<div styleName="left-column">
 						<div styleName="left-column-top">
 							<ProductInfo />
@@ -60,10 +71,7 @@ export default class General extends Component {
 						</div>
 					</div>
 					<div styleName="right-column">
-						<h1 styleName="title">MONTH-TO-MONTH SUBSCRIPTION</h1>
-						<h3 styleName="subtitle">
-							Billed monthly. Renews automatically, cancel any time. Free shipping.
-						</h3>
+						<TitleWrapper />
 
 						<Subscription onlySmallScreen={subscriptionOnlySmallScreen} />
 

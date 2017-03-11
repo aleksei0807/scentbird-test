@@ -34,6 +34,7 @@ export default class AutoInput extends Component {
 		arrow: PropTypes.string,
 		required: PropTypes.bool,
 		white: PropTypes.bool,
+		errorClassName: PropTypes.string,
 	};
 
 	constructor(...args: Array<*>): void {
@@ -198,6 +199,7 @@ export default class AutoInput extends Component {
 		delete props.arrow;
 		delete props.validations;
 		delete props.forceRender;
+		delete props.errorClassName;
 
 		const validationRes = this.validate();
 
@@ -215,9 +217,15 @@ export default class AutoInput extends Component {
 					/>
 				{validationRes
 					? <div
+						className={`${styles['error-text']}${
+							this.props.errorClassName
+							? ` ${this.props.errorClassName}`
+							: ''}`
+						}
 						style={{
 							...this.styleProps.errorStyle,
 							bottom: this.props.arrow && ~this.props.arrow.indexOf('color') ? 3 : -15,
+							left: 0,
 						}}>{validationRes}</div>
 					: null
 				}

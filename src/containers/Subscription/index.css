@@ -61,8 +61,21 @@
 	margin-right: 1px;
 }
 
-@media (max-width: 890px) {
+@media (max-width: 1040px) {
+	.container {
+		padding-top: 35px;
+	}
 	.container.onlySmallScreen {
 		display: block;
+	}
+}
+
+@media (max-width: 359px) {
+	.wrapper.left {
+		margin-left: 0;
+	}
+	.wrapper.right {
+		margin-left: 0;
+		margin-right: 0;
 	}
 }

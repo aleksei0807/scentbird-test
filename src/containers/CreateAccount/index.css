@@ -25,3 +25,17 @@
 	}
 }
 
+@media (max-width: 610px) {
+	.form {
+		flex-direction: column;
+	}
+	.input {
+		&.right {
+			margin-left: 0;
+		}
+		&.left {
+			margin-right: 0;
+		}
+	}
+}
+
