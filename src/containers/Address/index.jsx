@@ -1,5 +1,6 @@
 /* @flow */
 import React, { Component, PropTypes } from 'react';
+import { Map as IMap } from 'immutable';
 import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
 import { Form } from 'formsy';
@@ -19,6 +20,7 @@ import styles from './index.css';
 import tr from '../../utils/transliterator';
 import getCountries from '../../utils/getCountries';
 import getRegions from '../../utils/getRegions';
+import getCities from '../../utils/getCities';
 
 const googleAPIKey: string = 'AIzaSyC7MKR8tBlhRTI-RxnePPXyky_atZG2_8Q';
 
@@ -38,6 +40,10 @@ const mapStateToProps = (state: Object, props: Object): Object => ({
 export default class Address extends Component {
 	/* eslint-disable react/sort-comp */
 	streetEmitter: ?Emitter<*, *>;
+	regionState: string;
+	streetState: string;
+	cityState: string;
+	countryState: string;
 	state: {
 		zipValid: boolean;
 		streetSuggestData: Array<*>;
@@ -50,6 +56,9 @@ export default class Address extends Component {
 		regions: Array<Object>;
 		regionsList: Array<*>;
 		regionNameToRegionObject: Object;
+		cities: Array<Object>;
+		citiesList: Array<*>;
+		cityNameToCityObject: Object;
 	};
 	/* eslint-enable react/sort-comp */
 
@@ -60,7 +69,11 @@ export default class Address extends Component {
 
 	constructor(...args: Array<*>): void {
 		super(...args);
-
+		this.props.setData([this.props.type], IMap());
+		this.regionState = '';
+		this.streetState = '';
+		this.cityState = '';
+		this.countryState = '';
 		this.state = {
 			zipValid: false,
 			streetSuggestData: [],
@@ -73,6 +86,9 @@ export default class Address extends Component {
 			regions: [],
 			regionsList: [],
 			regionNameToRegionObject: {},
+			cities: [],
+			citiesList: [],
+			cityNameToCityObject: {},
 		};
 	}
 
@@ -88,17 +104,10 @@ export default class Address extends Component {
 				countries: data.response.items,
 				countriesList: data.response.items.map(v => v.title),
 				countryNameToCountryObject: data.response.items.reduce(
-					(collector, v) => ({ ...collector, ...{[v.name]: v}}),
-					{}
-				),
-			});
-		});
-		getRegions((err, data) => {
-			this.setState({
-				regions: data.response.items,
-				regionsList: data.response.items.map(v => v.title),
-				regionNameToRegionObject: data.response.items.reduce(
-					(collector, v) => ({ ...collector, ...{[v.name]: v}}),
+					(collector, v) => ({
+						...collector,
+						...{[v.title]: v},
+					}),
 					{}
 				),
 			});
@@ -141,6 +150,7 @@ export default class Address extends Component {
 	}
 
 	streetSuggest = (e: Object): void => {
+		this.streetState = e.target.value;
 		if (!e.searchText) {
 			return;
 		}
@@ -178,12 +188,7 @@ export default class Address extends Component {
 	}
 
 	streetChoosed = (data: {results: Array<*>}) => ((selectedText: string, idx: number) => {
-		// console.log(data.results[idx].address_components.reduce((collector: Object, v: Object) => (
-		// 	{
-		// 		...collector,
-		// 		...{[v.types[0]]: v},
-		// 	}
-		// ), {}));
+		this.setData('street', selectedText);
 	})
 
 	countryShouldBeInList = (searchText: string) => (
@@ -217,7 +222,134 @@ export default class Address extends Component {
 	}
 
 	countryChoosed = (countryName: string): void => {
-		this.setData(['country'], this.state.countryNameToCountryObject[countryName]);
+		const country = this.state.countryNameToCountryObject[countryName];
+		this.countryState = countryName;
+		this.setData(['country'], country);
+		this.loadRegions(country);
+	}
+
+	loadRegions = (country: {id: number; title: string}) => {
+		getRegions({countryID: country.id}, (err, data) => {
+			this.setState({
+				regions: data.response.items,
+				regionsList: data.response.items.map(v => v.title),
+				regionNameToRegionObject: data.response.items.reduce(
+					(collector, v) => ({ ...collector, ...{[v.title]: v}}),
+					{}
+				),
+			});
+		});
+	}
+
+	regionSelected = (regionName: string) => {
+		const region = this.state.regionNameToRegionObject[regionName];
+		this.regionState = regionName;
+		this.setData(['region'], region);
+		this.loadCities(region);
+	}
+
+	regionUpdated = (searchText: string) => {
+		this.regionState = searchText;
+		getRegions({
+			countryID: this.getData('country', {id: 0}).id,
+			query: searchText,
+		}, (err, data) => {
+			this.setState({
+				regions: data.response.items,
+				regionsList: data.response.items.map(v => v.title),
+				regionNameToRegionObject: data.response.items.reduce(
+					(collector, v) => ({ ...collector, ...{[v.title]: v}}),
+					{}
+				),
+			});
+		});
+	}
+
+	regionBlur = () => {
+		const r = this.getData('region');
+		if (r && r.title === this.regionState
+			|| this.state.regionNameToRegionObject) {
+			return;
+		}
+		this.setData(
+			['region'],
+			this.state.regionNameToRegionObject[this.regionState]
+				|| {id: -1, title: this.regionState}
+		);
+	}
+	streetBlur = () => {
+		if (this.getData('city') === this.streetState) {
+			return;
+		}
+		this.setData(
+			['street'],
+			this.streetState
+		);
+	}
+	countryBlur = () => {
+		const c = this.getData('country');
+		if (c && c.title === this.countryState
+			|| !this.state.countryNameToCountryObject) {
+			return;
+		}
+		this.setData(
+			['country'],
+			this.state.countryNameToCountryObject[this.countryState]
+				|| {id: -1, title: this.countryState}
+		);
+	}
+
+	loadCities = (region: {id: number; title: string}): void => {
+		getCities({
+			countryID: this.getData('country', {id: 0}).id,
+			regionID: region.id,
+		}, (err, data) => {
+			this.setState({
+				cities: data.response.items,
+				citiesList: data.response.items.map(v => v.title),
+				cityNameToCityObject: data.response.items.reduce(
+					(collector, v) => ({ ...collector, ...{[v.title]: v}}),
+					{}
+				),
+			});
+		});
+	}
+
+	cityBlur = () => {
+		const c = this.getData('city');
+		if (c && c.title === this.cityState
+			|| !this.state.cityNameToCityObject) {
+			console.log('return');
+			return;
+		}
+		this.setData(
+			['city'],
+			this.state.cityNameToCityObject[this.cityState]
+				|| {id: -1, title: this.cityState}
+		);
+	}
+	cityUpdated = (searchText: string) => {
+		this.cityState = searchText;
+		getCities({
+			countryID: this.getData('country', {id: 0}).id,
+			regionID: this.getData('region', {id: 0}).id,
+			query: searchText,
+		}, (err, data) => {
+			this.setState({
+				cities: data.response.items,
+				citiesList: data.response.items.map(v => v.title),
+				cityNameToCityObject: data.response.items.reduce(
+					(collector, v) => ({ ...collector, ...{[v.title]: v}}),
+					{}
+				),
+			});
+		});
+	}
+
+	citySelected = (cityName: string) => {
+		const city = this.state.cityNameToCityObject[cityName];
+		this.cityState = cityName;
+		this.setData(['city'], city);
 	}
 
 	render(): Element<{styleName: string}> {
@@ -234,6 +366,7 @@ export default class Address extends Component {
 							onUpdateInput={this.streetChange}
 							onNewRequest={this.streetChoosed(this.state.streetRawData)}
 							dataSource={this.state.streetSuggestData}
+							onBlur={this.streetBlur}
 							filter={(searchText: string, key: any) => (
 								searchText !== '' && key.toLowerCase().indexOf(searchText.toLowerCase()) !== -1
 							)}
@@ -259,23 +392,34 @@ export default class Address extends Component {
 						</div>
 						<AutoInput
 							dataSource={this.state.regionsList}
+							onUpdateInput={this.regionUpdated}
+							onNewRequest={this.regionSelected}
+							onBlur={this.regionBlur}
 							styleName="col-1of3 field"
 							name="region"
 							floatingLabelText="Region / State"
-							disabled={this.getData('country', true)}
+							disabled={!this.getData('country', false)}
+							required
+							filter={() => true}
 							/>
-						<Input
+						<AutoInput
+							dataSource={this.state.citiesList}
+							onUpdateInput={this.cityUpdated}
+							onNewRequest={this.citySelected}
+							onBlur={this.cityBlur}
 							styleName="col-1of3 field"
 							name="city"
 							floatingLabelText="City"
-							disabled={this.getData('country', true) || this.getData('region', true)}
+							disabled={!this.getData('country', false) || !this.getData('region', false)}
+							required
 							filter={() => true}
 							/>
 					</div>
 					<AutoInput
 						dataSource={this.state.countriesList}
 						onUpdateInput={this.countryUpdate}
-						onNewRequest={this.streetChoosed(this.state.streetRawData)}
+						onNewRequest={this.countryChoosed}
+						onBlur={this.countryBlur}
 						styleName="country field"
 						name="country"
 						floatingLabelText="Country"

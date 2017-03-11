@@ -91,8 +91,8 @@ export default class AutoInput extends Component {
 		}
 		this.value = choosen;
 		this.calculateOpacity(choosen);
-		if (this.customOnNewRequest) {
-			this.customOnNewRequest(choosen, index);
+		if (this.props.onNewRequest) {
+			this.props.onNewRequest(choosen, index);
 		}
 	}
 	onUpdateInput = (searchText: string, dataSource: Array<*>, params: Object): void => {
@@ -101,8 +101,8 @@ export default class AutoInput extends Component {
 		}
 		this.value = searchText;
 		this.calculateOpacity(searchText);
-		if (this.customOnUpdateInput) {
-			this.customOnUpdateInput(searchText, dataSource, params);
+		if (this.props.onUpdateInput) {
+			this.props.onUpdateInput(searchText, dataSource, params);
 		}
 	}
 
@@ -119,8 +119,8 @@ export default class AutoInput extends Component {
 		this.focused = true;
 		this.prestine = false;
 		this.calculateOpacity(this.value);
-		if (this.customOnFocus) {
-			this.customOnFocus(...args);
+		if (this.props.onFocus) {
+			this.props.onFocus(...args);
 		}
 	}
 
@@ -128,8 +128,8 @@ export default class AutoInput extends Component {
 		this.focused = false;
 		this.prestine = false;
 		this.calculateOpacity(this.value);
-		if (this.customOnBlur) {
-			this.customOnBlur(...args);
+		if (this.props.onBlur) {
+			this.props.onBlur(...args);
 		}
 	}
 
@@ -145,10 +145,6 @@ export default class AutoInput extends Component {
 		}};
 		const containerClassName = props.className;
 
-		this.customOnNewRequest = this.props.onNewRequest;
-		this.customOnUpdateInput = this.props.onUpdateInput;
-		this.customOnFocus = this.props.onFocus;
-		this.customOnBlur = this.props.onBlur;
 		if (this.props.required) {
 			this.requiredRequested = true;
 		}
