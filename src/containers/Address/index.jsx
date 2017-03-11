@@ -381,11 +381,21 @@ export default class Address extends Component {
 				<Form
 					name={this.props.type}>
 					{this.props.showName
-						? <Input styleName="firstName field" name="firstName" floatingLabelText="First name" />
+						? <Input
+							styleName="firstName field"
+							name="firstName"
+							floatingLabelText="First name"
+							required
+							/>
 						: null
 					}
 					{this.props.showName
-						? <Input styleName="lastName field" name="lastName" floatingLabelText="Last name" />
+						? <Input
+							styleName="lastName field"
+							name="lastName"
+							floatingLabelText="Last name"
+							required
+							/>
 						: null
 					}
 					<div styleName="group">
@@ -400,6 +410,7 @@ export default class Address extends Component {
 							)}
 							name="street"
 							floatingLabelText="Street adress"
+							required
 							/>
 						<Input styleName="apt field" name="apt" floatingLabelText="Apt/Suite (Optional)" />
 					</div>
@@ -412,6 +423,7 @@ export default class Address extends Component {
 								onChange={this.zipChanged}
 								value={this.getData('zip')}
 								floatingLabelText="Zip code"
+								required
 								/>
 							<Tick
 								styleName={`zip-tick${this.state.zipValid ? ' valid' : ''}`}

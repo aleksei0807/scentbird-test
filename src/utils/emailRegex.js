@@ -8,5 +8,5 @@ for example, in 2017 example@mail is a valid email. also,
 "pretty \"cool\""+emails@should.work.too."by the way!
 emails@in.emails"@should.work.well.too pretty much like "emails"+"in@subject"@too.
 */
-const regex = /.+@.+/;
+const regex = /^[^.@]+@[^,"'+/:`|#!()&?*\\~@]+$/;
 export default regex;

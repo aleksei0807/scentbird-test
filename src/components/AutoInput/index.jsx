@@ -63,8 +63,8 @@ export default class AutoInput extends Component {
 			},
 			errorStyle: {
 				position: 'absolute',
-				bottom: -20,
-				// border: '2px solid #fd6464',
+				bottom: -15,
+				fontSize: 12,
 				color: '#f00',
 			},
 			hintStyle: {
@@ -137,6 +137,13 @@ export default class AutoInput extends Component {
 		!this.prestine && this.requiredRequested
 	)
 
+	validateRequired = (): boolean | string => {
+		if (!this.prestine && this.requiredRequested && !this.value) {
+			return 'This field is required';
+		}
+		return false;
+	}
+
 	render(): Element<{className: ?string}> {
 		const props = {...{
 			...this.styleProps,
@@ -147,6 +154,10 @@ export default class AutoInput extends Component {
 
 		if (this.props.required) {
 			this.requiredRequested = true;
+			props.validations = {
+				...props.validations,
+				validateRequired: this.validateRequired,
+			};
 		}
 		if (this.props.value) {
 			this.value = this.props.value;
@@ -160,7 +171,7 @@ export default class AutoInput extends Component {
 		delete props.onUpdateInput;
 
 		return (
-			<div className={containerClassName || null}>
+			<div style={{position: 'relative'}} className={containerClassName || null}>
 				<AutoComplete
 					{...props}
 					required={this.required()}
@@ -171,6 +182,10 @@ export default class AutoInput extends Component {
 					onUpdateInput={this.onUpdateInput}
 					styleName="input-container"
 					/>
+				{this.validateRequired()
+					? <div style={this.styleProps.errorStyle}>{this.validateRequired()}</div>
+					: null
+				}
 			</div>
 		);
 	}

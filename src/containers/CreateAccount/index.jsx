@@ -19,21 +19,6 @@ export default class CreateAccount extends Component {
 		accountData: PropTypes.object,
 	};
 
-	/* eslint-disable react/sort-comp */
-	state: {
-		emailRequired: boolean;
-		passwordRequired: boolean;
-	};
-
-	constructor(...args: Array<*>) {
-		super(...args);
-		this.state = {
-			emailRequired: false,
-			passwordRequired: false,
-		};
-	}
-	/* eslint-enable react/sort-comp */
-
 	setData = (currentValues: { email: string; password: string; }) => {
 		const { email, password } = currentValues;
 		let prevEmail = '';
@@ -50,14 +35,6 @@ export default class CreateAccount extends Component {
 		}
 	}
 
-	inputRequired = (name: string) => () => {
-		if (!this.state[name]) {
-			this.setState({
-				[name]: true,
-			});
-		}
-	}
-
 	render() {
 		return (
 			<div styleName="container">
@@ -67,8 +44,7 @@ export default class CreateAccount extends Component {
 						className={`${styles.input} ${styles.left}`}
 						name="email"
 						floatingLabelText="Email address"
-						onFocus={this.inputRequired('emailRequired')}
-						required={this.state.emailRequired}
+						required
 						validationError="This is not an email"
 						validations={{
 							matchRegexp: emailRegex,
@@ -78,10 +54,12 @@ export default class CreateAccount extends Component {
 						className={`${styles.input} ${styles.right}`}
 						name="password"
 						floatingLabelText="Password"
-						onFocus={this.inputRequired('passwordRequired')}
 						validationError="Password should be at least 10 characters long"
-						required={this.state.passwordRequired}
-						validations="minLength:10"
+						required
+						type="password"
+						validations={{
+							matchRegexp: /.{10,}/,
+						}}
 						/>
 				</Form>
 			</div>

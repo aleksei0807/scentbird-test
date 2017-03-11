@@ -22,6 +22,8 @@ export default class Input extends Component {
 	customOnBlur: ?Function;
 	customOnFocus: ?Function;
 	value: string;
+	prestine: boolean;
+	requiredRequested: boolean;
 	state: {
 		floatingLabelStyle: Object;
 	};
@@ -39,7 +41,8 @@ export default class Input extends Component {
 
 	constructor(...args: Array<*>): void {
 		super(...args);
-
+		this.prestine = true;
+		this.requiredRequested = false;
 		this.styleProps = {
 			underlineShow: false,
 			floatingLabelFocusStyle: {
@@ -64,7 +67,7 @@ export default class Input extends Component {
 			},
 			errorStyle: {
 				position: 'absolute',
-				bottom: -20,
+				bottom: -15,
 				color: '#f00',
 			},
 			hintStyle: {
@@ -102,6 +105,7 @@ export default class Input extends Component {
 
 	onFocus = (...args: Array<*>): void => {
 		this.focused = true;
+		this.prestine = false;
 		this.calculateOpacity(this.value);
 		if (this.customOnFocus) {
 			this.customOnFocus(...args);
@@ -110,6 +114,7 @@ export default class Input extends Component {
 
 	onBlur = (e: UIEvent): void => {
 		this.focused = false;
+		this.prestine = false;
 		let newValue: string = '';
 		if (e.target instanceof HTMLInputElement) {
 			newValue = e.target.value;
@@ -118,6 +123,17 @@ export default class Input extends Component {
 		if (this.customOnBlur) {
 			this.customOnBlur(e);
 		}
+	}
+
+	required = (): boolean => (
+		!this.prestine && this.requiredRequested
+	)
+
+	validateRequired = (form: Object, field: string): boolean | string => {
+		if (!this.prestine && this.requiredRequested && !field) {
+			return 'This field is required';
+		}
+		return true;
 	}
 
 	render(): Element<{className: ?string}> {
@@ -131,16 +147,26 @@ export default class Input extends Component {
 		this.customOnChange = props.onChange;
 		this.customOnFocus = props.onFocus;
 		this.customOnBlur = props.onBlur;
+		if (props.required) {
+			this.requiredRequested = true;
+			props.validations = {
+				...props.validations,
+				validateRequired: this.validateRequired,
+			};
+		}
 		if (props.value) {
 			this.value = props.value;
 		}
 		delete props.styles;
+		delete props.required;
 		delete props.className;
+		delete props.omitMargin;
 
 		return (
 			<div className={containerClassName || null}>
 				<FormsyText
 					{...props}
+					required={this.required()}
 					onFocus={this.onFocus}
 					onBlur={this.onBlur}
 					onChange={this.onChange}
