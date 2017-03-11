@@ -380,24 +380,26 @@ export default class Address extends Component {
 				<h1 styleName="formName">{this.props.type} address</h1>
 				<Form
 					name={this.props.type}>
-					{this.props.showName
-						? <Input
-							styleName="firstName field"
-							name="firstName"
-							floatingLabelText="First name"
-							required
-							/>
-						: null
-					}
-					{this.props.showName
-						? <Input
-							styleName="lastName field"
-							name="lastName"
-							floatingLabelText="Last name"
-							required
-							/>
-						: null
-					}
+					<div styleName="group">
+						{this.props.showName
+							? <Input
+								styleName="firstName field"
+								name="firstName"
+								floatingLabelText="First name"
+								required
+								/>
+							: null
+						}
+						{this.props.showName
+							? <Input
+								styleName="lastName field"
+								name="lastName"
+								floatingLabelText="Last name"
+								required
+								/>
+							: null
+						}
+					</div>
 					<div styleName="group">
 						<AutoInput
 							styleName="street field"

@@ -13,19 +13,25 @@
 	}
 }
 
-.group, .country {
+.group {
+	width: 100%;
+	display: flex;
+}
+.country {
 	width: 100%;
 }
 
 .field {
-	display: inline-block;
+	// display: inline-block;
 }
 
 .firstName {
 	padding-right: 10px;
+	flex-grow: 1;
 }
 
 .lastName {
+	flex-grow: 1;
 	padding-left: 10px;
 }
 
