@@ -442,6 +442,7 @@ export default class Address extends Component {
 							floatingLabelText="Region / State"
 							disabled={!this.getData('country', false)}
 							required
+							arrow="color more-margin"
 							filter={() => true}
 							/>
 						<AutoInput
@@ -454,6 +455,7 @@ export default class Address extends Component {
 							floatingLabelText="City"
 							disabled={!this.getData('country', false) || !this.getData('region', false)}
 							required
+							arrow="color"
 							filter={() => true}
 							/>
 					</div>

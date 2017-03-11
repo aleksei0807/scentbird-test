@@ -1,6 +1,5 @@
 /* @flow */
 import React, { Component, PropTypes } from 'react';
-import type { Element } from 'react'; // eslint-disable-line no-duplicate-imports
 import CSSModules from 'react-css-modules';
 import AutoComplete from 'material-ui/AutoComplete';
 import styles from './index.css';
@@ -9,6 +8,7 @@ import styles from './index.css';
 export default class AutoInput extends Component {
 	/* eslint-disable react/sort-comp */
 	focused: boolean;
+	errored: boolean;
 	styleProps: Object;
 	customOnNewRequest: ?Function;
 	customOnUpdateInput: ?Function;
@@ -31,13 +31,16 @@ export default class AutoInput extends Component {
 		onFocus: PropTypes.func,
 		onKeyDown: PropTypes.func,
 		value: PropTypes.any,
+		arrow: PropTypes.string,
 		required: PropTypes.bool,
+		white: PropTypes.bool,
 	};
 
 	constructor(...args: Array<*>): void {
 		super(...args);
 		this.focused = false;
 		this.prestine = true;
+		this.errored = false;
 		this.requiredRequested = false;
 		this.styleProps = {
 			underlineShow: false,
@@ -74,6 +77,9 @@ export default class AutoInput extends Component {
 			openOnFocus: true,
 			maxSearchResults: 5,
 		};
+		if (this.props.white) {
+			this.styleProps.inputStyle.backgroundColor = '#fff';
+		}
 		this.value = '';
 		this.state = {
 			floatingLabelStyle: {
@@ -144,7 +150,26 @@ export default class AutoInput extends Component {
 		return false;
 	}
 
-	render(): Element<{className: ?string}> {
+	validate = (): ?string => {
+		if (!this.props.validations) {
+			return null;
+		}
+		let res = null;
+		Object.keys(this.props.validations).forEach((v) => {
+			if (this.props.validations[v] instanceof Function) {
+				const localRes = this.props.validations[v]();
+				if (localRes) {
+					res = localRes;
+					return false;
+				}
+			}
+			return true;
+		});
+		this.errored = !!res;
+		return res;
+	}
+
+	render() {
 		const props = {...{
 			...this.styleProps,
 			...this.props,
@@ -154,7 +179,7 @@ export default class AutoInput extends Component {
 
 		if (this.props.required) {
 			this.requiredRequested = true;
-			props.validations = {
+			this.props.validations = props.validations = {
 				...props.validations,
 				validateRequired: this.validateRequired,
 			};
@@ -169,6 +194,12 @@ export default class AutoInput extends Component {
 		delete props.validationErrors;
 		delete props.onNewRequest;
 		delete props.onUpdateInput;
+		delete props.white;
+		delete props.arrow;
+		delete props.validations;
+		delete props.forceRender;
+
+		const validationRes = this.validate();
 
 		return (
 			<div style={{position: 'relative'}} className={containerClassName || null}>
@@ -180,12 +211,19 @@ export default class AutoInput extends Component {
 					onBlur={this.onBlur}
 					onNewRequest={this.onNewRequest}
 					onUpdateInput={this.onUpdateInput}
-					styleName="input-container"
+					styleName={`input-container${this.errored ? ' error' : ''}`}
 					/>
-				{this.validateRequired()
-					? <div style={this.styleProps.errorStyle}>{this.validateRequired()}</div>
+				{validationRes
+					? <div
+						style={{
+							...this.styleProps.errorStyle,
+							bottom: this.props.arrow && ~this.props.arrow.indexOf('color') ? 3 : -15,
+						}}>{validationRes}</div>
 					: null
 				}
+				{this.props.arrow
+					? <div styleName={`arrow ${this.props.arrow}`} />
+					: null}
 			</div>
 		);
 	}

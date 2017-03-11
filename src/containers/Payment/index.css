@@ -91,9 +91,22 @@
 	align-items: center;
 }
 
+.expiration-wrapper {
+	align-items: center;
+	display: flex;
+}
+
 .cards {
-	width: 144px;
-	height: 21px;
+	& img {
+		padding-left: 2px;
+		filter: grayscale(1);
+		opacity: .6;
+		translate: all 150ms ease-in-out 0s;
+		&.active {
+			filter: none;
+			opacity: 1;
+		}
+	}
 }
 
 .lock {
@@ -126,4 +139,16 @@
 		font-weight: 600;
 		line-height: 20px;
 	}
+}
+
+.expMonth,
+.expYear,
+.expText {
+	width: 140px;
+	margin-right: 20px;
+}
+
+.expText {
+	color: #9b9b9b;
+	font-size: 18px;
 }

@@ -33,45 +33,47 @@ export default class ProductInfo extends Component {
 				<div styleName="preview-wrapper">
 					<img src={preview} alt="free-perfume-product" />
 				</div>
-				<div styleName="info">
-					<div styleName="info-line">
-						<span>Monthly subscription</span>
-						<span>$14.95</span>
-					</div>
-					<div styleName="info-line">
-						<span>Shipping</span>
-						<span>FREE</span>
-					</div>
-					<div styleName="info-line">
-						<span>Tax</span>
-						<span>$2.35</span>
-					</div>
-					<div styleName="info-line">
-						<span>Discount</span>
-						<span className="crose">-$5</span>
-					</div>
-					<div styleName="info-line">
-						<span>Credit (Balance $100)</span>
-						<div>
-							<span>$50</span>
-							<div styleName="tick-container" onClick={this.toggleTick}>
-								<div
-									styleName="tick"
-									style={{
-										display: this.state.tickEnable ? 'block' : 'none',
-									}}>
-									<Tick color={roseColor} />
+				<div styleName="info-wrapper">
+					<div styleName="info">
+						<div styleName="info-line">
+							<span>Monthly subscription</span>
+							<span>$14.95</span>
+						</div>
+						<div styleName="info-line">
+							<span>Shipping</span>
+							<span>FREE</span>
+						</div>
+						<div styleName="info-line">
+							<span>Tax</span>
+							<span>$2.35</span>
+						</div>
+						<div styleName="info-line">
+							<span>Discount</span>
+							<span className="crose">-$5</span>
+						</div>
+						<div styleName="info-line">
+							<span>Credit (Balance $100)</span>
+							<div>
+								<span>$50</span>
+								<div styleName="tick-container" onClick={this.toggleTick}>
+									<div
+										styleName="tick"
+										style={{
+											display: this.state.tickEnable ? 'block' : 'none',
+										}}>
+										<Tick color={roseColor} />
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div styleName="info-line">
-					<span styleName="total">TOTAL</span>
-					<span styleName="total">$25.00</span>
-				</div>
-				<div styleName="have-a-coupon">
-					Have a <a href="#">coupon code</a>?
+					<div styleName="info-line">
+						<span styleName="total">TOTAL</span>
+						<span styleName="total">$25.00</span>
+					</div>
+					<div styleName="have-a-coupon">
+						Have a <a href="#">coupon code</a>?
+					</div>
 				</div>
 			</div>
 		);

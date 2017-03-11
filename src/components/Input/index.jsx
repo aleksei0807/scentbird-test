@@ -37,6 +37,7 @@ export default class Input extends Component {
 		onFocus: PropTypes.func,
 		onKeyDown: PropTypes.func,
 		value: PropTypes.any,
+		white: PropTypes.bool,
 	};
 
 	constructor(...args: Array<*>): void {
@@ -75,6 +76,9 @@ export default class Input extends Component {
 			},
 			fullWidth: true,
 		};
+		if (this.props.white) {
+			this.styleProps.inputStyle.backgroundColor = '#fff';
+		}
 		this.value = '';
 		this.state = {
 			floatingLabelStyle: {
@@ -161,6 +165,7 @@ export default class Input extends Component {
 		delete props.required;
 		delete props.className;
 		delete props.omitMargin;
+		delete props.white;
 
 		return (
 			<div className={containerClassName || null}>

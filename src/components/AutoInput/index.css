@@ -2,6 +2,9 @@
 	transform: translateZ(0);
 	margin-bottom: 20px;
 	height: 50px !important;
+	&.error input {
+		border: 2px solid rgba(255, 0, 0, 0.6) !important;
+	}
 	& input {
 		font-size: 18px;
 		height: 50px;
@@ -26,5 +29,23 @@
 		&:hover {
 			font-size: 14px;
 		}
+	}
+}
+.arrow {
+	position: absolute;
+	top: 22px;
+	right: 20px;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 6px 3px 0 3px;
+	&.gray {
+		border-color: #d8d8d8 transparent transparent transparent;
+	}
+	&.color {
+		border-color: $buttonColor transparent transparent transparent;
+	}
+	&.more-margin {
+		right: 40px;
 	}
 }
