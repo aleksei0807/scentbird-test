@@ -65,6 +65,8 @@ export default class Address extends Component {
 	static propTypes: Object = {
 		type: PropTypes.string.isRequired,
 		addressData: PropTypes.object,
+		showName: PropTypes.bool,
+		showPhone: PropTypes.bool,
 	};
 
 	constructor(...args: Array<*>): void {
@@ -133,7 +135,10 @@ export default class Address extends Component {
 	}
 
 	isZipValid = (form: Object, field: string): boolean | string => {
-		if (/[a-zA-Z0-9-\s]{4,}/.test(field)) {
+		if (!field) {
+			return false;
+		}
+		if (/[a-zA-Z0-9-\s]{4,}/.test(field.replace(/^\s+|\s+$/, ''))) {
 			this.setState({
 				zipValid: true,
 			});
@@ -142,11 +147,28 @@ export default class Address extends Component {
 		this.setState({
 			zipValid: false,
 		});
-		return field === '' ? false : 'Invalid zip code';
+		return 'Invalid zip code';
+	}
+
+	phoneValidation = (form: Object, field: string): boolean | string => {
+		if (field === '') {
+			return true;
+		}
+		if (!field) {
+			return false;
+		}
+		if (/[0-9-\s]{5,}/.test(field.replace(/^\s+|\s+$/, ''))) {
+			return true;
+		}
+		return 'Invalid phone number';
 	}
 
 	zipChanged = (e: {target: { value: string }}): void => {
 		this.setData(['zip'], e.target.value);
+	}
+
+	phoneChange = (e: {target: { value: string }}): void => {
+		this.setData(['phone'], e.target.value);
 	}
 
 	streetSuggest = (e: Object): void => {
@@ -358,8 +380,14 @@ export default class Address extends Component {
 				<h1 styleName="formName">{this.props.type} address</h1>
 				<Form
 					name={this.props.type}>
-					<Input styleName="firstName field" name="firstName" floatingLabelText="First name" />
-					<Input styleName="lastName field" name="lastName" floatingLabelText="Last name" />
+					{this.props.showName
+						? <Input styleName="firstName field" name="firstName" floatingLabelText="First name" />
+						: null
+					}
+					{this.props.showName
+						? <Input styleName="lastName field" name="lastName" floatingLabelText="Last name" />
+						: null
+					}
 					<div styleName="group">
 						<AutoInput
 							styleName="street field"
@@ -427,6 +455,19 @@ export default class Address extends Component {
 						required
 						filter={() => true}
 						/>
+					{this.props.showPhone
+						? <div styleName="phone-container">
+							<Input
+								styleName="phone"
+								name="phone"
+								validations={{ phoneValidation: this.phoneValidation }}
+								onChange={this.phoneChange}
+								floatingLabelText="Mobile number (Optional)"
+								omitMargin
+								/>
+							<div styleName="phone-text">We may send you special discounts and offers</div>
+						</div>
+					: null}
 				</Form>
 			</div>
 		);

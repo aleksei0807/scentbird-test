@@ -1,6 +1,10 @@
 .input-container {
 	transform: translateZ(0);
 	margin-bottom: 20px;
+	&.no-margin {
+		margin-bottom: 0;
+	}
+
 	& input {
 		font-size: 18px;
 		height: 50px;

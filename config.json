@@ -1,5 +1,7 @@
 {
 	"host": "localhost",
 	"port": 8080,
-	"subscriptionOnlySmallScreen": false
+	"subscriptionOnlySmallScreen": false,
+	"billingAddressShowName": true,
+	"billingAddressShowPhone": true
 }

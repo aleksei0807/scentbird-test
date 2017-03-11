@@ -43,7 +43,7 @@ export default class Input extends Component {
 		this.styleProps = {
 			underlineShow: false,
 			floatingLabelFocusStyle: {
-				background: 'transparent',
+				background: '#fff',
 				left: 10,
 				paddingLeft: 5,
 				paddingRight: 5,
@@ -144,7 +144,7 @@ export default class Input extends Component {
 					onFocus={this.onFocus}
 					onBlur={this.onBlur}
 					onChange={this.onChange}
-					styleName="input-container"
+					styleName={`input-container${this.props.omitMargin ? ' no-margin' : ''}`}
 					/>
 			</div>
 		);

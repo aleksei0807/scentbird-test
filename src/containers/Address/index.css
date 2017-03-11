@@ -1,5 +1,5 @@
 .container {
-	padding-bottom: 25px;
+	padding-top: 20px;
 }
 
 .formName {
@@ -65,4 +65,18 @@
 .firstName, .lastName {
 	width: 50%;
 	display: inline-block;
+}
+
+.phone-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding-top: 20px;
+}
+.phone,
+.phone-text {
+	flex-grow: 1;
+}
+.phone-text {
+	text-align: center;
 }

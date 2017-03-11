@@ -91,6 +91,9 @@ header {
 	cursor: pointer;
 	vertical-align: text-top;
 }
+.billing-address-toggle-container {
+	padding-top: 20px;
+}
 
 .tick {
 	margin-top: 1px;

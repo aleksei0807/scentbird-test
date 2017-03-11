@@ -13,7 +13,11 @@ import Chicken from '../../components/Chicken';
 import Tick from '../../components/Tick';
 import { setData } from '../../actions/data';
 import arrow from './images/arrow.svg';
-import { subscriptionOnlySmallScreen } from '../../../config.json';
+import {
+	subscriptionOnlySmallScreen,
+	billingAddressShowName,
+	billingAddressShowPhone,
+} from '../../../config.json';
 import styles from './index.css';
 
 const mapStateToProps = state => ({
@@ -65,9 +69,9 @@ export default class General extends Component {
 
 						<CreateAccount />
 
-						<Address type="shipping" />
+						<Address type="shipping" showName showPhone />
 
-						<div onClick={this.toggleTick}>
+						<div onClick={this.toggleTick} styleName="billing-address-toggle-container">
 							<div styleName="tick-container">
 								<div
 									styleName="tick"
@@ -80,7 +84,14 @@ export default class General extends Component {
 							<span styleName="use-this-address">Use this address as my billing address</span>
 						</div>
 
-						{ showBillingAddres ? <Address type="billing" /> : null }
+						{ showBillingAddres
+							? <Address
+								type="billing"
+								showName={billingAddressShowName}
+								showPhone={billingAddressShowPhone}
+								/>
+							: null
+						}
 
 						<Payment />
 						
